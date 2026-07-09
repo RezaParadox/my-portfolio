@@ -1,28 +1,25 @@
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import path from "path";
+import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
-// imports routes
-import about from "./routes/about.route.js";
-import auth from "./routes/auth.route.js";
-import contact from "./routes/contact.route.js";
-import messages from "./routes/messages.route.js";
+// Routes
+import users from "./routes/users.route.js";
 import projects from "./routes/projects.route.js";
-import upload from "./routes/upload.route.js";
 
 // DB
 import connectDB from "./config/db.js";
 
 dotenv.config();
 
-// Connect to MongoDB
 connectDB();
 
-const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
@@ -39,26 +36,21 @@ app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
-app.use("/api/auth", about);
+app.use("/api/users", users);
 app.use("/api/projects", projects);
-app.use("/api/about", about);
-app.use("/api/contact", contact);
-app.use("/api/messages", messages);
-app.use("/api/upload", upload);
 
-//  for fist time check server is run or not you don't need always
+// Health check
 app.get("/", (req, res) => {
   res.json({
-    message: "🚀 Blog API is running!",
+    message: "Portfolio API is running!",
     endpoints: {
       users: "/api/users",
-      authors: "/api/authors",
-      posts: "/api/posts",
+      projects: "/api/projects",
     },
   });
 });
 
-// ERROR HANDLING
+// Error handling
 app.use((err, req, res, next) => {
   console.error("Error:", err.stack);
   res.status(err.status || 500).json({
@@ -75,8 +67,6 @@ app.use((req, res) => {
   });
 });
 
-
-
 app.listen(PORT, () => {
-  console.log(`✅ Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

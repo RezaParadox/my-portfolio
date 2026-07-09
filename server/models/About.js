@@ -22,4 +22,4 @@ const aboutSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("About", aboutSchema);
+export default mongoose.model("About", aboutSchema);

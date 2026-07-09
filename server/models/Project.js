@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const projectSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: true, trim: true },
     description: { type: String, required: true },
     image: { type: String, default: "" },
     techTags: [{ type: String }],
@@ -13,4 +13,4 @@ const projectSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Project", projectSchema);
+export default mongoose.model("Project", projectSchema);
