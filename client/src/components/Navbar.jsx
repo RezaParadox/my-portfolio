@@ -9,7 +9,6 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { path: '/', label: 'Home' },
     { path: '/about', label: 'About' },
     { path: '/projects', label: 'Projects' },
     { path: '/contact', label: 'Contact' },
@@ -18,115 +17,126 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link to="/" className="text-xl font-bold text-gray-900 dark:text-white">
-            Portfolio
-          </Link>
+    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4">
+      <nav className="flex items-center gap-8 px-6 py-3 bg-white/10 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="text-white"
+          >
+            <path
+              d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+              fill="currentColor"
+            />
+          </svg>
+          <span className="text-lg font-semibold text-white">Portfolio</span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-6">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`text-sm font-medium transition-colors ${
+                isActive(link.path)
+                  ? 'text-purple-400'
+                  : 'text-gray-300 hover:text-white'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+          {user ? (
+            <>
               <Link
-                key={link.path}
-                to={link.path}
+                to="/admin"
                 className={`text-sm font-medium transition-colors ${
-                  isActive(link.path)
-                    ? 'text-blue-600 dark:text-blue-400'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                  location.pathname.startsWith('/admin')
+                    ? 'text-purple-400'
+                    : 'text-gray-300 hover:text-white'
                 }`}
               >
-                {link.label}
+                Dashboard
               </Link>
-            ))}
-            {user ? (
-              <>
-                <Link
-                  to="/admin"
-                  className={`text-sm font-medium transition-colors ${
-                    location.pathname.startsWith('/admin')
-                      ? 'text-blue-600 dark:text-blue-400'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                  }`}
-                >
-                  Dashboard
-                </Link>
-                <button
-                  onClick={logout}
-                  className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              <button
+                onClick={logout}
+                className="text-sm font-medium text-gray-300 hover:text-white"
               >
-                Admin
-              </Link>
-            )}
-          </div>
-
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden p-2 text-gray-600 dark:text-gray-300"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-          </button>
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="px-5 py-2 text-sm font-medium text-white border border-white/30 rounded-full hover:bg-white/10 transition-all"
+            >
+              Sign in
+            </Link>
+          )}
         </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-800">
-            {navLinks.map((link) => (
+        {/* Mobile menu button */}
+        <button
+          className="md:hidden p-2 text-gray-300"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+        </button>
+      </nav>
+
+      {/* Mobile Navigation */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed top-20 left-4 right-4 bg-gray-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block py-3 text-sm font-medium ${
+                isActive(link.path)
+                  ? 'text-purple-400'
+                  : 'text-gray-300 hover:text-white'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+          {user ? (
+            <>
               <Link
-                key={link.path}
-                to={link.path}
+                to="/admin"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-2 text-sm font-medium ${
-                  isActive(link.path)
-                    ? 'text-blue-600 dark:text-blue-400'
-                    : 'text-gray-600 dark:text-gray-300'
-                }`}
+                className="block py-3 text-sm font-medium text-gray-300 hover:text-white"
               >
-                {link.label}
+                Dashboard
               </Link>
-            ))}
-            {user ? (
-              <>
-                <Link
-                  to="/admin"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300"
-                >
-                  Dashboard
-                </Link>
-                <button
-                  onClick={() => {
-                    logout();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300"
+              <button
+                onClick={() => {
+                  logout();
+                  setMobileMenuOpen(false);
+                }}
+                className="block py-3 text-sm font-medium text-gray-300 hover:text-white"
               >
-                Admin
-              </Link>
-            )}
-          </div>
-        )}
-      </div>
-    </nav>
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-3 text-sm font-medium text-gray-300 hover:text-white"
+            >
+              Sign in
+            </Link>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
