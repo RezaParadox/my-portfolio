@@ -1,7 +1,25 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiArrowRight, FiGithub, FiLinkedin, FiTwitter, FiInstagram, FiMail } from 'react-icons/fi';
+import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaNpm, FaGithub, FaGitAlt } from 'react-icons/fa';
+import { SiTypescript, SiMongodb, SiShadcnui, SiTailwindcss, SiPnpm } from 'react-icons/si';
 import Lightfall from '../components/Lightfall';
+
+const skills = [
+  { name: 'HTML', icon: FaHtml5 },
+  { name: 'CSS', icon: FaCss3Alt },
+  { name: 'JavaScript', icon: FaJs },
+  { name: 'TypeScript', icon: SiTypescript },
+  { name: 'React', icon: FaReact },
+  { name: 'Tailwind', icon: SiTailwindcss },
+  { name: 'Shadcn', icon: SiShadcnui },
+  { name: 'Node.js', icon: FaNodeJs },
+  { name: 'MongoDB', icon: SiMongodb },
+  { name: 'npm', icon: FaNpm },
+  { name: 'pnpm', icon: SiPnpm },
+  { name: 'GitHub', icon: FaGithub },
+  { name: 'Git', icon: FaGitAlt },
+];
 
 const Home = () => {
   return (
@@ -45,32 +63,21 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <p className="text-xl sm:text-2xl text-gray-300 mb-8">
-              We are an agency that builds brands and creates solutions for companies looking to grow
+            <p className="text-xl sm:text-2xl text-gray-300 mb-4">
+              Here we are going to turn beautiful dreams into reality together
             </p>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl p-8 mb-12"
+            transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="text-center">
-                <h3 className="text-xl font-semibold text-purple-400 mb-3">Collaboration</h3>
-                <p className="text-gray-300">
-                  We work closely with our clients to understand their vision and bring it to life through creative collaboration.
-                </p>
-              </div>
-              <div className="text-center">
-                <h3 className="text-xl font-semibold text-purple-400 mb-3">Our approach</h3>
-                <p className="text-gray-300">
-                  We combine strategic thinking with technical expertise to deliver innovative solutions that drive results.
-                </p>
-              </div>
-            </div>
+            <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
+              If you are looking for someone who can create a fast and powerful modern site that uses modern tools and technologies. You have come to the right place
+            </p>
           </motion.div>
+
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -138,7 +145,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Skills Section */}
+      {/* Skills Section - Magic Bento Style */}
       <section className="relative z-10 py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -151,22 +158,33 @@ const Home = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">My skills</h2>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-4"
-          >
-            {['JavaScript', 'React', 'Node.js', 'TypeScript', 'Python', 'MongoDB', 'PostgreSQL', 'AWS', 'Docker', 'Git'].map((skill, index) => (
-              <span
-                key={index}
-                className="px-6 py-3 bg-white/10 backdrop-blur-xl border border-white/10 text-white rounded-full text-sm font-medium hover:bg-white/20 transition-colors"
-              >
-                {skill}
-              </span>
-            ))}
-          </motion.div>
+          <div className="grid grid-cols-4 gap-4">
+            {skills.map((skill, index) => {
+              const Icon = skill.icon;
+              return (
+                <motion.div
+                  key={skill.name}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: '0 0 30px rgba(168, 85, 247, 0.4)'
+                  }}
+                  className="relative overflow-hidden rounded-2xl p-6 bg-white/10 backdrop-blur-xl border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center gap-3"
+                >
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-purple-500/10 via-transparent to-purple-500/5 pointer-events-none" />
+
+                  <Icon size={40} className="text-gray-400 relative z-10" />
+                  <span className="text-sm font-medium text-white relative z-10">
+                    {skill.name}
+                  </span>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
