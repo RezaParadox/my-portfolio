@@ -10,16 +10,17 @@ import Message from "../models/Message.js";
 
 export const register = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "Username or email already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       username,
+      email,
       password: hashedPassword,
     });
 
@@ -31,7 +32,7 @@ export const register = async (req, res) => {
 
     res.status(201).json({
       token,
-      user: { id: user._id, username: user.username, role: user.role },
+      user: { id: user._id, username: user.username, email: user.email, role: user.role },
     });
   } catch (err) {
     res.status(500).json({ message: "Server error" });

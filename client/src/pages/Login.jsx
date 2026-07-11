@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiLock, FiUser, FiAlertCircle } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
@@ -164,6 +164,15 @@ const Login = () => {
               )}
             </Button>
           </form>
+
+          <div className='mt-6 text-center'>
+            <p className='text-gray-600 dark:text-gray-400 text-sm'>
+              Don't have an account?{' '}
+              <Link to='/register' className='text-purple-500 hover:text-purple-600 font-medium'>
+                Create one
+              </Link>
+            </p>
+          </div>
         </div>
       </motion.div>
     </section>

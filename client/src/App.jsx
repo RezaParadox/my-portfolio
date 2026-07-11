@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ManageProjects from './pages/ManageProjects';
 import ManageAbout from './pages/ManageAbout';
@@ -22,6 +23,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/admin" element={
                 <ProtectedRoute>
                   <Dashboard />
