@@ -72,7 +72,7 @@ const Contact = () => {
           className='text-center mb-16'
         >
           <h1 className='text-4xl font-bold text-white mb-4'>Get In Touch</h1>
-          <div className='w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6' />
+          <div className='w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6' />
           <p className='text-gray-300'>
             Have a question or want to work together? Send me a message!
           </p>
@@ -180,7 +180,7 @@ const Contact = () => {
             <Button
               type='submit'
               disabled={loading}
-              className='w-full h-11  bg-gradient-to-r from-blue-500 to-purple-500 cursor-pointer hover:scale-x-100 text-white font-medium rounded-xl transition-all duration-200 backdrop-blur-sm gap-2'
+              className='w-full h-11  bg-linear-to-r from-blue-500 to-purple-500 cursor-pointer hover:scale-x-100 text-white font-medium rounded-xl transition-all duration-200 backdrop-blur-sm gap-2'
             >
               {loading ? (
                 <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white' />

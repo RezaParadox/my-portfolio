@@ -155,7 +155,7 @@ const Login = () => {
             <Button
               type='submit'
               disabled={loading}
-              className='w-full h-11 bg-gradient-to-r from-blue-500 to-purple-500 cursor-pointer text-white font-medium rounded-xl transition-all duration-200 backdrop-blur-sm'
+              className='w-full h-11 bg-linear-to-r from-blue-500 to-purple-500 cursor-pointer text-white font-medium rounded-xl transition-all duration-200 backdrop-blur-sm'
             >
               {loading ? (
                 <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white' />

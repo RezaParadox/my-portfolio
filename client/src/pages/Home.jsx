@@ -225,7 +225,7 @@ const Home = () => {
                 alt={about?.name || 'Developer'}
                 className='w-full h-full object-cover'
               />
-              <div className='absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none' />
+              <div className='absolute inset-0 bg-linear-to-t from-black/30 to-transparent pointer-events-none' />
             </div>
           </motion.div>
 
@@ -385,7 +385,7 @@ const Home = () => {
                 }}
                 className='bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:bg-white/15 cursor-pointer flex flex-col'
               >
-                <div className={`relative w-full h-48 bg-gradient-to-br ${project.color}`}>
+                <div className={`relative w-full h-48 bg-linear-to-br ${project.color}`}>
                   <div className="absolute inset-0 shadow-[inset_0_-20px_30px_rgba(88,28,135,0.6)] pointer-events-none" />
                 </div>
                 <div className='p-5 flex flex-col gap-3'>
