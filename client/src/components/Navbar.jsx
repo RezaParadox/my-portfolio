@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
@@ -6,15 +6,32 @@ import { FiMenu, FiX } from 'react-icons/fi';
 const Navbar = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { path: '/about', label: 'About' },
-    { path: '/projects', label: 'Projects' },
+    { hash: '#about', label: 'About' },
+    { hash: '#projects', label: 'Projects' },
     { path: '/contact', label: 'Contact' },
   ];
 
-  const isActive = (path) => location.pathname === path;
+  const scrollToSection = (hash) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const el = document.querySelector(hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.querySelector(hash);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const isActive = (link) => {
+    if (link.hash) return location.pathname === '/' && location.hash === link.hash;
+    return location.pathname === link.path;
+  };
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4">
@@ -38,19 +55,33 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`text-sm font-medium transition-colors ${
-                isActive(link.path)
-                  ? 'text-purple-400'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) =>
+            link.hash ? (
+              <button
+                key={link.hash}
+                onClick={() => scrollToSection(link.hash)}
+                className={`text-sm font-medium transition-colors ${
+                  isActive(link)
+                    ? 'text-purple-400'
+                    : 'text-gray-300 hover:text-white'
+                }`}
+              >
+                {link.label}
+              </button>
+            ) : (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`text-sm font-medium transition-colors ${
+                  isActive(link)
+                    ? 'text-purple-400'
+                    : 'text-gray-300 hover:text-white'
+                }`}
+              >
+                {link.label}
+              </Link>
+            )
+          )}
           {user ? (
             <>
               <Link
@@ -92,20 +123,37 @@ const Navbar = () => {
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <div className="md:hidden fixed top-20 left-4 right-4 bg-gray-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setMobileMenuOpen(false)}
-              className={`block py-3 text-sm font-medium ${
-                isActive(link.path)
-                  ? 'text-purple-400'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) =>
+            link.hash ? (
+              <button
+                key={link.hash}
+                onClick={() => {
+                  scrollToSection(link.hash);
+                  setMobileMenuOpen(false);
+                }}
+                className={`block w-full text-left py-3 text-sm font-medium ${
+                  isActive(link)
+                    ? 'text-purple-400'
+                    : 'text-gray-300 hover:text-white'
+                }`}
+              >
+                {link.label}
+              </button>
+            ) : (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block py-3 text-sm font-medium ${
+                  isActive(link)
+                    ? 'text-purple-400'
+                    : 'text-gray-300 hover:text-white'
+                }`}
+              >
+                {link.label}
+              </Link>
+            )
+          )}
           {user ? (
             <>
               <Link
