@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FiMail, FiTrash2, FiArrowLeft } from 'react-icons/fi';
+import { FiMail, FiTrash2, FiArrowLeft, FiCopy, FiCheck } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import api from '../utils/api';
 
@@ -8,6 +8,7 @@ const Messages = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     fetchMessages();
@@ -15,7 +16,7 @@ const Messages = () => {
 
   const fetchMessages = async () => {
     try {
-      const res = await api.get('/messages');
+      const res = await api.get('/users/messages');
       setMessages(res.data);
     } catch (err) {
       console.error('Failed to fetch messages');
@@ -26,7 +27,7 @@ const Messages = () => {
 
   const markAsRead = async (id) => {
     try {
-      await api.put(`/messages/${id}/read`);
+      await api.put(`/users/messages/${id}/read`);
       setMessages(messages.map(m => m._id === id ? { ...m, read: true } : m));
     } catch (err) {
       console.error('Failed to mark as read');
@@ -36,7 +37,7 @@ const Messages = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this message?')) {
       try {
-        await api.delete(`/messages/${id}`);
+        await api.delete(`/users/messages/${id}`);
         setMessages(messages.filter(m => m._id !== id));
         if (selectedMessage?._id === id) {
           setSelectedMessage(null);
@@ -51,6 +52,16 @@ const Messages = () => {
     setSelectedMessage(message);
     if (!message.read) {
       markAsRead(message._id);
+    }
+  };
+
+  const copyEmail = async (email) => {
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      alert(`Email: ${email}`);
     }
   };
 
@@ -166,7 +177,7 @@ const Messages = () => {
                       {selectedMessage.message}
                     </p>
                   </div>
-                  <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                  <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex gap-3">
                     <a
                       href={`mailto:${selectedMessage.email}?subject=Re: Your message on my portfolio`}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
@@ -174,6 +185,13 @@ const Messages = () => {
                       <FiMail size={18} />
                       Reply via Email
                     </a>
+                    <button
+                      onClick={() => copyEmail(selectedMessage.email)}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors"
+                    >
+                      {copied ? <FiCheck size={18} /> : <FiCopy size={18} />}
+                      {copied ? 'Copied!' : 'Copy Email'}
+                    </button>
                   </div>
                 </motion.div>
               ) : (

@@ -3,6 +3,8 @@ import {
   // Auth
   register,
   login,
+  sendOtp,
+  verifyOtp,
   // User profile
   getMe,
   updateProfile,
@@ -26,6 +28,8 @@ const router = express.Router();
 // ===================== AUTH =====================
 router.post("/register", register);
 router.post("/login", login);
+router.post("/send-otp", sendOtp);
+router.post("/verify-otp", verifyOtp);
 
 // ===================== USER PROFILE =====================
 router.get("/me", protect, getMe);

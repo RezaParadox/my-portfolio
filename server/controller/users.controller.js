@@ -5,6 +5,8 @@ import path from "path";
 import User from "../models/User.js";
 import About from "../models/About.js";
 import Message from "../models/Message.js";
+import Otp from "../models/Otp.js";
+import { sendOtpEmail, generateOtp } from "../utils/email.js";
 
 // ===================== AUTH =====================
 
@@ -36,6 +38,62 @@ export const register = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const sendOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    await Otp.deleteMany({ email, verified: false });
+
+    const otp = generateOtp();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+    await Otp.create({ email, otp, expiresAt });
+
+    await sendOtpEmail(email, otp);
+
+    res.json({ message: "OTP sent to your email" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to send OTP" });
+  }
+};
+
+export const verifyOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP are required" });
+    }
+
+    const otpRecord = await Otp.findOne({
+      email,
+      otp,
+      verified: false,
+      expiresAt: { $gt: new Date() },
+    });
+
+    if (!otpRecord) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    otpRecord.verified = true;
+    await otpRecord.save();
+
+    res.json({ message: "Email verified successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to verify OTP" });
   }
 };
 

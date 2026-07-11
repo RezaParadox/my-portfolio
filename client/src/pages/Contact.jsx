@@ -41,7 +41,7 @@ const Contact = () => {
 
     setLoading(true);
     try {
-      await api.post("/contact", formData);
+      await api.post("/users/contact", formData);
       setStatus({ type: "success", message: "Message sent successfully!" });
       setFormData({ name: "", email: "", message: "" });
       setErrors({});
@@ -116,7 +116,7 @@ const Contact = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder='Your name'
-                className={`h-11 bg-white/30 dark:bg-white/5 border-white/30 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:ring-blue-500/30 ${
+                className={`h-11 bg-white/30 dark:bg-white/5 border-white/30 dark:border-white/10 text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:ring-blue-500/30 ${
                   errors.name
                     ? "border-red-500/50 focus-visible:ring-red-500/30"
                     : ""
@@ -140,7 +140,7 @@ const Contact = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder='your.email@example.com'
-                className={`h-11 bg-white/30 dark:bg-white/5 border-white/30 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:ring-blue-500/30 ${
+                className={`h-11 bg-white/30 dark:bg-white/5 border-white/30 dark:border-white/10 text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:ring-blue-500/30 ${
                   errors.email
                     ? "border-red-500/50 focus-visible:ring-red-500/30"
                     : ""
@@ -164,7 +164,7 @@ const Contact = () => {
                 onChange={handleChange}
                 rows={5}
                 placeholder='Your message...'
-                className={`bg-white/30 dark:bg-white/5 border-white/30 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:ring-blue-500/30 resize-none ${
+                className={`bg-white/30 dark:bg-white/5 border-white/30 dark:border-white/10 text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:ring-blue-500/30 resize-none ${
                   errors.message
                     ? "border-red-500/50 focus-visible:ring-red-500/30"
                     : ""

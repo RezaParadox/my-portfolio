@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiLock, FiUser, FiMail, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
-import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
 import { registerSchema } from '../schemas/auth';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -13,7 +13,6 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -38,11 +37,17 @@ const Register = () => {
     }
 
     setLoading(true);
-    const registerResult = await register(formData.username, formData.email, formData.password);
-    if (registerResult.success) {
-      navigate('/admin');
-    } else {
-      setError(registerResult.message);
+    try {
+      await axios.post('/api/users/send-otp', { email: formData.email });
+      navigate('/verify-otp', {
+        state: {
+          email: formData.email,
+          username: formData.username,
+          password: formData.password,
+        },
+      });
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to send verification code');
     }
     setLoading(false);
   };
