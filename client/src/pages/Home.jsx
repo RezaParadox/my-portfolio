@@ -27,7 +27,7 @@ import {
   SiPnpm,
   SiNextdotjs,
 } from "react-icons/si";
-import Lightfall from "../components/Lightfall";
+import DotGrid from "../components/DotGrid";
 import api from "../utils/api";
 
 const skills = [
@@ -51,43 +51,23 @@ const Home = () => {
   const [about, setAbout] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchAbout = async () => {
-      try {
-        const res = await api.get('/about');
-        setAbout(res.data);
-      } catch (err) {
-        console.error('Failed to fetch about info');
-      }
-    };
-    fetchAbout();
-  }, []);
-
   const scrollTo = (hash) => {
     const el = document.querySelector(hash);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <div className='relative min-h-screen'>
       {/* Background Animation ---------------------------------------------- */}
       <div className='absolute inset-0'>
-        <Lightfall
-          colors={["#A6C8FF", "#5227FF", "#FF9FFC"]}
-          backgroundColor='#0A0A2E'
-          speed={0.5}
-          streakCount={3}
-          streakWidth={1}
-          streakLength={1}
-          glow={1}
-          density={0.6}
-          twinkle={1}
-          zoom={3}
-          backgroundGlow={0.5}
-          opacity={1}
-          mouseInteraction={true}
-          mouseStrength={0.5}
-          mouseRadius={1}
+        <DotGrid
+          dotSize={2.2}
+          dotSpacing={28}
+          inactiveColor='rgba(168, 85, 247, 0.25)'
+          activeColor='#EC4899'
+          gradientWidth={400}
+          loopDuration={3}
+          mouseRadius={120}
         />
       </div>
 
@@ -136,7 +116,7 @@ const Home = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.15 }}
-              onClick={() => scrollTo('#projects')}
+              onClick={() => scrollTo("#projects")}
               className='inline-flex items-center justify-center gap-2 px-8 py-4 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg transition-colors duration-150'
             >
               Explore
@@ -146,7 +126,7 @@ const Home = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.15 }}
-              onClick={() => scrollTo('#about')}
+              onClick={() => scrollTo("#about")}
               className='inline-flex items-center justify-center gap-2 px-8 py-4 border border-gray-600 hover:border-gray-400 text-gray-300 hover:text-white font-medium rounded-lg transition-colors duration-150'
             >
               Discover More
@@ -199,8 +179,8 @@ const Home = () => {
                 Backend Development
               </h3>
               <p className='text-gray-300'>
-                Designing scalable server architectures with Node.js and MongoDB.
-                I build robust APIs and databases that power modern web
+                Designing scalable server architectures with Node.js and
+                MongoDB. I build robust APIs and databases that power modern web
                 applications.
               </p>
             </motion.div>
@@ -222,7 +202,7 @@ const Home = () => {
             <div className='aspect-square bg-white/10 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10'>
               <img
                 src='/my-pic.png'
-                alt={about?.name || 'Developer'}
+                alt={about?.name || "Developer"}
                 className='w-full h-full object-cover'
               />
               <div className='absolute inset-0 bg-linear-to-t from-black/30 to-transparent pointer-events-none' />
@@ -241,10 +221,12 @@ const Home = () => {
             </h2>
             <div className='space-y-4 mb-8'>
               <p className='text-gray-300 leading-relaxed'>
-                {about?.bio || "I'm a passionate full-stack developer with a love for creating elegant, efficient, and user-friendly web applications. With expertise in modern technologies like React, Node.js, and cloud services, I transform complex problems into simple, beautiful, and intuitive solutions."}
+                {about?.bio ||
+                  "I'm a passionate full-stack developer with a love for creating elegant, efficient, and user-friendly web applications. With expertise in modern technologies like React, Node.js, and cloud services, I transform complex problems into simple, beautiful, and intuitive solutions."}
               </p>
               <p className='text-gray-400 leading-relaxed'>
-                {about?.tagline || "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community."}
+                {about?.tagline ||
+                  "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community."}
               </p>
             </div>
 
@@ -269,22 +251,40 @@ const Home = () => {
             {/* Social Links */}
             <div className='flex gap-4'>
               {about?.socialLinks?.github && (
-                <a href={about.socialLinks.github} target='_blank' rel='noopener noreferrer' className='text-gray-400 hover:text-white transition-colors'>
+                <a
+                  href={about.socialLinks.github}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-gray-400 hover:text-white transition-colors'
+                >
                   <FiGithub size={24} />
                 </a>
               )}
               {about?.socialLinks?.linkedin && (
-                <a href={about.socialLinks.linkedin} target='_blank' rel='noopener noreferrer' className='text-gray-400 hover:text-white transition-colors'>
+                <a
+                  href={about.socialLinks.linkedin}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-gray-400 hover:text-white transition-colors'
+                >
                   <FiLinkedin size={24} />
                 </a>
               )}
               {about?.socialLinks?.twitter && (
-                <a href={about.socialLinks.twitter} target='_blank' rel='noopener noreferrer' className='text-gray-400 hover:text-white transition-colors'>
+                <a
+                  href={about.socialLinks.twitter}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-gray-400 hover:text-white transition-colors'
+                >
                   <FiTwitter size={24} />
                 </a>
               )}
               {about?.socialLinks?.email && (
-                <a href={`mailto:${about.socialLinks.email}`} className='text-gray-400 hover:text-white transition-colors'>
+                <a
+                  href={`mailto:${about.socialLinks.email}`}
+                  className='text-gray-400 hover:text-white transition-colors'
+                >
                   <FiMail size={24} />
                 </a>
               )}
@@ -320,7 +320,7 @@ const Home = () => {
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                   whileHover={{
                     scale: 1.08,
-                    transition: { duration: 0.15 }
+                    transition: { duration: 0.15 },
                   }}
                   className='relative overflow-hidden rounded-2xl p-6 bg-white/10 backdrop-blur-xl border border-white/10 hover:border-purple-500/50 hover:bg-white/15 cursor-pointer flex flex-col items-center justify-center gap-3'
                 >
@@ -336,7 +336,10 @@ const Home = () => {
       </section>
 
       {/* Projects Section ---------------------------------------------- */}
-      <section id='projects' className='relative z-10 py-20 px-4 sm:px-6 lg:px-8'>
+      <section
+        id='projects'
+        className='relative z-10 py-20 px-4 sm:px-6 lg:px-8'
+      >
         <div className='max-w-6xl mx-auto'>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -381,12 +384,14 @@ const Home = () => {
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 whileHover={{
                   scale: 1.03,
-                  transition: { duration: 0.15 }
+                  transition: { duration: 0.15 },
                 }}
                 className='bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:bg-white/15 cursor-pointer flex flex-col'
               >
-                <div className={`relative w-full h-48 bg-linear-to-br ${project.color}`}>
-                  <div className="absolute inset-0 shadow-[inset_0_-20px_30px_rgba(88,28,135,0.6)] pointer-events-none" />
+                <div
+                  className={`relative w-full h-48 bg-linear-to-br ${project.color}`}
+                >
+                  <div className='absolute inset-0 shadow-[inset_0_-20px_30px_rgba(88,28,135,0.6)] pointer-events-none' />
                 </div>
                 <div className='p-5 flex flex-col gap-3'>
                   <div className='flex flex-wrap gap-1.5'>
@@ -430,7 +435,11 @@ const Home = () => {
             </h2>
 
             <div className='flex flex-col sm:flex-row justify-center gap-6 mb-12'>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.15 }}>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+              >
                 <Link
                   to='/contact'
                   className='inline-flex items-center justify-center gap-2 px-8 py-4 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg transition-colors duration-150'
@@ -439,7 +448,11 @@ const Home = () => {
                   Contact Me
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.15 }}>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+              >
                 <a
                   href='#'
                   className='inline-flex items-center justify-center gap-2 px-8 py-4 border border-gray-600 hover:border-gray-400 text-gray-300 hover:text-white font-medium rounded-lg transition-colors duration-150'

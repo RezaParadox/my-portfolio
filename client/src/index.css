@@ -113,8 +113,9 @@
 /* Apply the shadow and letter spacing globally or to specific elements as needed */
 html {
   scroll-behavior: smooth;
-  box-shadow: var(--shadow); /* Apply global shadow */
-  letter-spacing: var(--letter-spacing); /* Apply global letter spacing */
+  box-shadow: var(--shadow);
+  letter-spacing: var(--letter-spacing);
+  cursor: none;
 }
 
 body {

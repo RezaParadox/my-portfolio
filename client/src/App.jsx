@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import CursorTrail from './components/CursorTrail';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
@@ -16,6 +17,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <CursorTrail />
         <div className="flex flex-col min-h-screen">
           <Navbar />
           <main className="grow">
