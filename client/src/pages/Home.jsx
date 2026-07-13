@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -47,6 +47,221 @@ const skills = [
   { name: "Git", icon: FaGitAlt },
 ];
 
+const FloatingDots = ({ isHovered }) => {
+  const canvasRef = useRef(null);
+  const rafRef = useRef(null);
+  const dotsRef = useRef([]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width = rect.width + "px";
+    canvas.style.height = rect.height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    if (dotsRef.current.length === 0) {
+      for (let i = 0; i < 12; i++) {
+        dotsRef.current.push({
+          x: Math.random() * rect.width,
+          y: Math.random() * rect.height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          size: Math.random() * 2 + 1,
+          alpha: Math.random() * 0.5 + 0.2,
+        });
+      }
+    }
+
+    const draw = () => {
+      const w = rect.width;
+      const h = rect.height;
+      ctx.clearRect(0, 0, w, h);
+
+      dotsRef.current.forEach((dot) => {
+        dot.x += dot.vx;
+        dot.y += dot.vy;
+        if (dot.x < 0 || dot.x > w) dot.vx *= -1;
+        if (dot.y < 0 || dot.y > h) dot.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(168, 85, 247, ${isHovered ? dot.alpha + 0.3 : dot.alpha})`;
+        ctx.fill();
+      });
+
+      rafRef.current = requestAnimationFrame(draw);
+    };
+
+    rafRef.current = requestAnimationFrame(draw);
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [isHovered]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+    />
+  );
+};
+
+const SkillCard = ({ skill, index }) => {
+  const cardRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
+
+  const handleMouseMove = useCallback((e) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    setGlowPos({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
+  }, []);
+
+  const Icon = skill.icon;
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, scale: 0.8 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className='relative overflow-hidden rounded-2xl p-6 cursor-pointer flex flex-col items-center justify-center gap-3'
+      style={{
+        background: "#0d0d1a",
+        border: isHovered
+          ? "1px solid rgba(168, 85, 247, 0.6)"
+          : "1px solid rgba(255,255,255,0.08)",
+        boxShadow: isHovered
+          ? `0 0 20px rgba(168, 85, 247, 0.4), 0 0 60px rgba(168, 85, 247, 0.15), inset 0 0 30px rgba(168, 85, 247, 0.08)`
+          : "none",
+        transition: "border-color 0.3s, box-shadow 0.3s",
+      }}
+    >
+      <FloatingDots isHovered={isHovered} />
+
+      {isHovered && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: `radial-gradient(circle at ${glowPos.x}% ${glowPos.y}%, rgba(168, 85, 247, 0.15) 0%, transparent 60%)`,
+            pointerEvents: "none",
+          }}
+        />
+      )}
+
+      <Icon size={40} className='text-gray-400 relative z-10' />
+      <span className='text-sm font-medium text-white relative z-10'>
+        {skill.name}
+      </span>
+    </motion.div>
+  );
+};
+
+const TypingText = ({ text, speed = 120 }) => {
+  const [displayed, setDisplayed] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < text.length) {
+        setDisplayed(text.slice(0, i + 1));
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [text, speed]);
+
+  useEffect(() => {
+    const blink = setInterval(() => setShowCursor((prev) => !prev), 530);
+    return () => clearInterval(blink);
+  }, []);
+
+  return (
+    <span>
+      {displayed}
+      <span style={{ opacity: showCursor ? 1 : 0, transition: "opacity 0.1s" }}>
+        |
+      </span>
+    </span>
+  );
+};
+
+const ServiceCard = ({ title, desc, delay = 0 }) => {
+  const cardRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
+
+  const handleMouseMove = useCallback((e) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    setGlowPos({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
+  }, []);
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className='relative overflow-hidden rounded-2xl p-8 cursor-pointer'
+      style={{
+        background: "#0d0d1a",
+        border: isHovered
+          ? "1px solid rgba(168, 85, 247, 0.6)"
+          : "1px solid rgba(255,255,255,0.08)",
+        boxShadow: isHovered
+          ? "0 0 20px rgba(168, 85, 247, 0.4), 0 0 60px rgba(168, 85, 247, 0.15), inset 0 0 30px rgba(168, 85, 247, 0.08)"
+          : "none",
+        transition: "border-color 0.3s, box-shadow 0.3s",
+      }}
+    >
+      <FloatingDots isHovered={isHovered} />
+
+      {isHovered && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: `radial-gradient(circle at ${glowPos.x}% ${glowPos.y}%, rgba(168, 85, 247, 0.15) 0%, transparent 60%)`,
+            pointerEvents: "none",
+          }}
+        />
+      )}
+
+      <h3 className='text-2xl font-bold text-white mb-4 relative z-10'>
+        {title}
+      </h3>
+      <p className='text-gray-300 relative z-10'>{desc}</p>
+    </motion.div>
+  );
+};
+
 const Home = () => {
   const [about, setAbout] = useState(null);
   const navigate = useNavigate();
@@ -79,27 +294,27 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className='text-4xl sm:text-6xl font-bold text-white mb-6'>
-              Welcome to my website
+            <h1 className='text-4xl sm:text-6xl font-bold text-white mb-6 lg:mt-20 uppercase'>
+              <TypingText text='Welcome to my website' />
             </h1>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            initial={{ opacity: 0, x: -60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <p className='text-xl sm:text-2xl text-gray-300 mb-4'>
+            <p className='text-xl sm:text-2xl text-gray-300 mb-4 uppercase shimmer-text'>
               Here we are going to turn beautiful dreams into reality together
             </p>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            initial={{ opacity: 0, x: -60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <p className='text-lg text-gray-400 mb-8 max-w-2xl mx-auto'>
+            <p className='text-lg text-gray-400 mb-8 max-w-2xl mx-auto shimmer-text uppercase'>
               If you are looking for someone who can create a fast and powerful
               modern site that uses modern tools and technologies. You have come
               to the right place
@@ -117,17 +332,18 @@ const Home = () => {
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.15 }}
               onClick={() => scrollTo("#projects")}
-              className='inline-flex items-center justify-center gap-2 px-8 py-4 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg transition-colors duration-150'
+              className='inline-flex items-center justify-center gap-2 px-8 py-4 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg transition-colors duration-150 lg:mt-20 '
             >
               Explore
               <FiArrowRight />
             </motion.button>
+
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.15 }}
               onClick={() => scrollTo("#about")}
-              className='inline-flex items-center justify-center gap-2 px-8 py-4 border border-gray-600 hover:border-gray-400 text-gray-300 hover:text-white font-medium rounded-lg transition-colors duration-150'
+              className='inline-flex items-center justify-center gap-2 px-8 py-4 border border-gray-600 hover:border-gray-400 text-gray-300 hover:text-white font-medium rounded-lg transition-colors duration-150 max-h-15 lg:mt-20'
             >
               Discover More
             </motion.button>
@@ -145,45 +361,29 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className='text-center mb-16'
           >
-            <h2 className='text-3xl sm:text-4xl font-bold text-white mb-4'>
+            <h2 className='text-3xl sm:text-4xl font-bold text-white mb-4 uppercase'>
               What I Do
             </h2>
           </motion.div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className='bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl p-8'
-            >
-              <h3 className='text-2xl font-bold text-white mb-4'>
-                Frontend Development
-              </h3>
-              <p className='text-gray-300'>
-                Building responsive, performant user interfaces with React,
-                Next.js, and modern CSS frameworks. I focus on creating seamless
-                user experiences with clean, maintainable code.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className='bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl p-8'
-            >
-              <h3 className='text-2xl font-bold text-white mb-4'>
-                Backend Development
-              </h3>
-              <p className='text-gray-300'>
-                Designing scalable server architectures with Node.js and
-                MongoDB. I build robust APIs and databases that power modern web
-                applications.
-              </p>
-            </motion.div>
+            {[
+              {
+                title: "Frontend Development",
+                desc: "Building responsive, performant user interfaces with React, Next.js, and modern CSS frameworks. I focus on creating seamless user experiences with clean, maintainable code.",
+              },
+              {
+                title: "Backend Development",
+                desc: "Designing scalable server architectures with Node.js and MongoDB. I build robust APIs and databases that power modern web applications.",
+              },
+            ].map((item, i) => (
+              <ServiceCard
+                key={i}
+                title={item.title}
+                desc={item.desc}
+                delay={0.2 + i * 0.2}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -216,7 +416,7 @@ const Home = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h2 className='text-3xl sm:text-4xl font-bold text-white mb-6'>
+            <h2 className='text-3xl sm:text-4xl font-bold text-white  uppercase mb-6'>
               About Me
             </h2>
             <div className='space-y-4 mb-8'>
@@ -233,17 +433,17 @@ const Home = () => {
             {/* Stats */}
             <div className='flex items-center gap-6 mb-8'>
               <div className='text-center'>
-                <span className='text-3xl font-bold text-blue-400'>3+</span>
+                <span className='text-3xl font-bold text-purple-400'>3+</span>
                 <p className='text-sm text-gray-400'>Years Experience</p>
               </div>
               <div className='w-px h-12 bg-gray-600'></div>
               <div className='text-center'>
-                <span className='text-3xl font-bold text-blue-400'>50+</span>
+                <span className='text-3xl font-bold text-purple-400'>50+</span>
                 <p className='text-sm text-gray-400'>Projects Completed</p>
               </div>
               <div className='w-px h-12 bg-gray-600'></div>
               <div className='text-center'>
-                <span className='text-3xl font-bold text-blue-400'>100%</span>
+                <span className='text-3xl font-bold text-purple-400'>100%</span>
                 <p className='text-sm text-gray-400'>Client Satisfaction</p>
               </div>
             </div>
@@ -295,7 +495,7 @@ const Home = () => {
 
       {/* Skills Section  ---------------------------------------------- */}
       <section className='relative z-10 py-20 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-6xl mx-auto'>
+        <div className='max-w-4xl mx-auto'>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -303,34 +503,15 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className='text-center mb-12'
           >
-            <h2 className='text-3xl sm:text-4xl font-bold text-white mb-4'>
+            <h2 className='text-3xl sm:text-4xl font-bold text-white mb-4 uppercase'>
               My skills
             </h2>
           </motion.div>
 
           <div className='grid grid-cols-4 gap-4'>
-            {skills.map((skill, index) => {
-              const Icon = skill.icon;
-              return (
-                <motion.div
-                  key={skill.name}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  whileHover={{
-                    scale: 1.08,
-                    transition: { duration: 0.15 },
-                  }}
-                  className='relative overflow-hidden rounded-2xl p-6 bg-white/10 backdrop-blur-xl border border-white/10 hover:border-purple-500/50 hover:bg-white/15 cursor-pointer flex flex-col items-center justify-center gap-3'
-                >
-                  <Icon size={40} className='text-gray-400 relative z-10' />
-                  <span className='text-sm font-medium text-white relative z-10'>
-                    {skill.name}
-                  </span>
-                </motion.div>
-              );
-            })}
+            {skills.map((skill, index) => (
+              <SkillCard key={skill.name} skill={skill} index={index} />
+            ))}
           </div>
         </div>
       </section>
@@ -348,7 +529,7 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className='text-center mb-12'
           >
-            <h2 className='text-3xl sm:text-4xl font-bold text-white mb-4'>
+            <h2 className='text-3xl sm:text-4xl font-bold text-white mb-4 uppercase'>
               Projects I've created
             </h2>
           </motion.div>
@@ -417,86 +598,6 @@ const Home = () => {
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Footer Section ----------------------------------------------*/}
-      <section className='relative z-10 py-20 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-4xl mx-auto'>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className='text-center'
-          >
-            <h2 className='text-3xl sm:text-4xl font-bold text-white mb-8'>
-              Get in touch
-            </h2>
-
-            <div className='flex flex-col sm:flex-row justify-center gap-6 mb-12'>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.15 }}
-              >
-                <Link
-                  to='/contact'
-                  className='inline-flex items-center justify-center gap-2 px-8 py-4 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg transition-colors duration-150'
-                >
-                  <FiMail size={20} />
-                  Contact Me
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.15 }}
-              >
-                <a
-                  href='#'
-                  className='inline-flex items-center justify-center gap-2 px-8 py-4 border border-gray-600 hover:border-gray-400 text-gray-300 hover:text-white font-medium rounded-lg transition-colors duration-150'
-                >
-                  My Resume
-                </a>
-              </motion.div>
-            </div>
-
-            <div className='flex justify-center gap-6'>
-              <a
-                href='https://github.com'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='text-gray-400 hover:text-white transition-colors'
-              >
-                <FiGithub size={24} />
-              </a>
-              <a
-                href='https://linkedin.com'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='text-gray-400 hover:text-white transition-colors'
-              >
-                <FiLinkedin size={24} />
-              </a>
-              <a
-                href='https://twitter.com'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='text-gray-400 hover:text-white transition-colors'
-              >
-                <FiTwitter size={24} />
-              </a>
-              <a
-                href='https://instagram.com'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='text-gray-400 hover:text-white transition-colors'
-              >
-                <FiInstagram size={24} />
-              </a>
-            </div>
-          </motion.div>
         </div>
       </section>
     </div>

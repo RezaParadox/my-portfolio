@@ -65,9 +65,7 @@ const Login = () => {
         {/* Glass card */}
         <div className='backdrop-blur-xl bg-white/20 dark:bg-white/5 border border-white/30 dark:border-white/10 rounded-2xl shadow-2xl p-8'>
           <div className='text-center mb-8'>
-            <div className='w-14 h-14 mx-auto mb-4 rounded-xl backdrop-blur-md bg-white/20 dark:bg-white/10 border border-white/20 dark:border-white/10 flex items-center justify-center'>
-              <FiLock className='text-blue-600 dark:text-blue-400' size={24} />
-            </div>
+
             <h1 className='text-3xl font-bold text-white mb-2'>Admin Login</h1>
             <p className='text-gray-600 dark:text-gray-300 text-sm'>
               Sign in to manage your portfolio

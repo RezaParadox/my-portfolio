@@ -84,13 +84,13 @@ const Messages = () => {
         >
           <Link
             to="/admin"
-            className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4"
+            className="inline-flex items-center gap-2 text-gray-400  mb-4"
           >
             <FiArrowLeft size={16} />
             Back to Dashboard
           </Link>
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Messages</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-400">
             {messages.length} message{messages.length !== 1 ? 's' : ''} •{' '}
             {messages.filter(m => !m.read).length} unread
           </p>

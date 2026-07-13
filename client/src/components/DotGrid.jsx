@@ -14,6 +14,13 @@ const DotGrid = ({
   const rafRef = useRef(null);
   const mouseRef = useRef({ x: -1000, y: -1000 });
 
+  const hexToRgb = (hex) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `${r}, ${g}, ${b}`;
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -33,14 +40,14 @@ const DotGrid = ({
     resize();
     window.addEventListener('resize', resize);
 
-    const onCursorMove = (e) => {
+    const onMouseMove = (e) => {
       const rect = canvas.getBoundingClientRect();
       mouseRef.current = {
-        x: e.detail.x - rect.left,
-        y: e.detail.y - rect.top,
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
       };
     };
-    window.addEventListener('cursor-move', onCursorMove);
+    window.addEventListener('mousemove', onMouseMove);
 
     const draw = (time) => {
       const w = canvas.width / (window.devicePixelRatio || 1);
@@ -84,7 +91,7 @@ const DotGrid = ({
             ctx.fillStyle = inactiveColor;
           } else {
             const alpha = 0.3 + intensity * 0.7;
-            ctx.fillStyle = `rgba(236, 72, 153, ${alpha})`;
+            ctx.fillStyle = `rgba(${hexToRgb(activeColor)}, ${alpha})`;
           }
 
           ctx.beginPath();
@@ -101,7 +108,7 @@ const DotGrid = ({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       window.removeEventListener('resize', resize);
-      window.removeEventListener('cursor-move', onCursorMove);
+      window.removeEventListener('mousemove', onMouseMove);
     };
   }, [dotSize, dotSpacing, inactiveColor, activeColor, gradientWidth, loopDuration, mouseRadius]);
 
