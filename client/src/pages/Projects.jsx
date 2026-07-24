@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiExternalLink, FiGithub } from 'react-icons/fi';
 import api from '../utils/api';
@@ -64,7 +65,10 @@ const Projects = () => {
                   scale: 1.03,
                   transition: { duration: 0.15 }
                 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl cursor-pointer flex flex-col"
+              >
+              <Link
+                to={`/projects/${project._id}`}
+                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl cursor-pointer flex flex-col block"
               >
                 {project.image && (
                   <div className="relative w-full h-48 overflow-hidden">
@@ -78,7 +82,7 @@ const Projects = () => {
                 )}
                 <div className="p-5 flex flex-col gap-3">
                   <div className="flex flex-wrap gap-1.5">
-                    {project.techTags?.map((tag, tagIndex) => (
+                    {(Array.isArray(project.techTags) ? project.techTags : typeof project.techTags === 'string' ? project.techTags.split(',').map(t => t.trim()).filter(Boolean) : []).map((tag, tagIndex) => (
                       <span
                         key={tagIndex}
                         className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-[11px] rounded-full"
@@ -121,6 +125,7 @@ const Projects = () => {
                     )}
                   </div>
                 </div>
+              </Link>
               </motion.div>
             ))}
           </div>

@@ -74,7 +74,7 @@ const Messages = () => {
   }
 
   return (
-    <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8" style={{ background: "var(--background)" }}>
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -84,22 +84,23 @@ const Messages = () => {
         >
           <Link
             to="/admin"
-            className="inline-flex items-center gap-2 text-gray-400  mb-4"
+            className="inline-flex items-center gap-2 mb-4"
+            style={{ color: "var(--muted-foreground)" }}
           >
             <FiArrowLeft size={16} />
             Back to Dashboard
           </Link>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Messages</h1>
-          <p className="text-gray-400">
+          <h1 className="text-4xl font-bold mb-2" style={{ color: "var(--foreground)" }}>Messages</h1>
+          <p style={{ color: "var(--muted-foreground)" }}>
             {messages.length} message{messages.length !== 1 ? 's' : ''} •{' '}
             {messages.filter(m => !m.read).length} unread
           </p>
         </motion.div>
 
         {messages.length === 0 ? (
-          <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-2xl">
-            <FiMail className="mx-auto text-gray-400 mb-4" size={48} />
-            <p className="text-gray-500 dark:text-gray-400">No messages yet</p>
+          <div className="text-center py-12 rounded-2xl" style={{ background: "var(--card)" }}>
+            <FiMail className="mx-auto mb-4" style={{ color: "var(--muted-foreground)" }} size={48} />
+            <p style={{ color: "var(--muted-foreground)" }}>No messages yet</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -112,28 +113,29 @@ const Messages = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
                   onClick={() => openMessage(message)}
-                  className={`p-4 rounded-xl cursor-pointer transition-all ${
+                  className={`p-4 rounded-xl cursor-pointer transition-all border-2 ${
                     selectedMessage?._id === message._id
-                      ? 'bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-500'
-                      : 'bg-white dark:bg-gray-800 border-2 border-transparent hover:border-gray-200 dark:hover:border-gray-700'
+                      ? 'border-blue-500'
+                      : 'border-transparent'
                   }`}
+                  style={{
+                    background: selectedMessage?._id === message._id ? "var(--secondary)" : "var(--card)",
+                  }}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`mt-1 ${message.read ? 'text-gray-400' : 'text-blue-500'}`}>
+                    <div className={`mt-1 ${message.read ? '' : 'text-blue-500'}`} style={{ color: message.read ? "var(--muted-foreground)" : undefined }}>
                       <FiMail size={18} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <h3 className={`font-medium truncate ${
-                          message.read ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white'
-                        }`}>
+                        <h3 className="font-medium truncate" style={{ color: "var(--foreground)" }}>
                           {message.name}
                         </h3>
-                        <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                        <span className="text-xs whitespace-nowrap" style={{ color: "var(--muted-foreground)" }}>
                           {new Date(message.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 truncate mt-1">
+                      <p className="text-sm truncate mt-1" style={{ color: "var(--muted-foreground)" }}>
                         {message.message}
                       </p>
                     </div>
@@ -148,11 +150,12 @@ const Messages = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6"
+                  className="rounded-2xl shadow-lg p-6"
+                  style={{ background: "var(--card)" }}
                 >
                   <div className="flex justify-between items-start mb-6">
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                      <h2 className="text-2xl font-bold" style={{ color: "var(--foreground)" }}>
                         {selectedMessage.name}
                       </h2>
                       <a
@@ -164,20 +167,21 @@ const Messages = () => {
                     </div>
                     <button
                       onClick={() => handleDelete(selectedMessage._id)}
-                      className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                      className="p-2 hover:text-red-500 transition-colors"
+                      style={{ color: "var(--muted-foreground)" }}
                     >
                       <FiTrash2 size={20} />
                     </button>
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  <div className="text-sm mb-4" style={{ color: "var(--muted-foreground)" }}>
                     {new Date(selectedMessage.createdAt).toLocaleString()}
                   </div>
                   <div className="prose dark:prose-invert max-w-none">
-                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                    <p className="whitespace-pre-wrap" style={{ color: "var(--foreground)" }}>
                       {selectedMessage.message}
                     </p>
                   </div>
-                  <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex gap-3">
+                  <div className="mt-6 pt-6 border-t flex gap-3" style={{ borderColor: "var(--border)" }}>
                     <a
                       href={`mailto:${selectedMessage.email}?subject=Re: Your message on my portfolio`}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
@@ -195,8 +199,8 @@ const Messages = () => {
                   </div>
                 </motion.div>
               ) : (
-                <div className="h-full flex items-center justify-center bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
-                  <p className="text-gray-500 dark:text-gray-400">Select a message to view</p>
+                <div className="h-full flex items-center justify-center rounded-2xl shadow-lg" style={{ background: "var(--card)" }}>
+                  <p style={{ color: "var(--muted-foreground)" }}>Select a message to view</p>
                 </div>
               )}
             </div>

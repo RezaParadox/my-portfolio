@@ -88,7 +88,7 @@ const ManageAbout = () => {
   }
 
   return (
-    <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8" style={{ background: "var(--background)" }}>
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -97,8 +97,8 @@ const ManageAbout = () => {
           className="flex justify-between items-center mb-12"
         >
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">About Info</h1>
-            <p className="text-gray-600 dark:text-gray-400">Manage your bio, skills, and experience</p>
+            <h1 className="text-4xl font-bold mb-2" style={{ color: "var(--foreground)" }}>About Info</h1>
+            <p style={{ color: "var(--muted-foreground)" }}>Manage your bio, skills, and experience</p>
           </div>
           <button
             onClick={handleSave}
@@ -128,52 +128,57 @@ const ManageAbout = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6"
+            className="rounded-2xl shadow-lg p-6"
+            style={{ background: "var(--card)" }}
           >
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Basic Info</h2>
+            <h2 className="text-xl font-bold mb-6" style={{ color: "var(--foreground)" }}>Basic Info</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium mb-1" style={{ color: "var(--foreground)" }}>
                   Name
                 </label>
                 <input
                   type="text"
                   value={about.name}
                   onChange={(e) => setAbout({ ...about, name: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none"
+                  style={{ background: "var(--secondary)", borderColor: "var(--border)", color: "var(--foreground)" }}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium mb-1" style={{ color: "var(--foreground)" }}>
                   Tagline
                 </label>
                 <input
                   type="text"
                   value={about.tagline}
                   onChange={(e) => setAbout({ ...about, tagline: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none"
+                  style={{ background: "var(--secondary)", borderColor: "var(--border)", color: "var(--foreground)" }}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium mb-1" style={{ color: "var(--foreground)" }}>
                   Bio
                 </label>
                 <textarea
                   value={about.bio}
                   onChange={(e) => setAbout({ ...about, bio: e.target.value })}
                   rows={4}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                  className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                  style={{ background: "var(--secondary)", borderColor: "var(--border)", color: "var(--foreground)" }}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium mb-1" style={{ color: "var(--foreground)" }}>
                   Profile Photo URL
                 </label>
                 <input
                   type="text"
                   value={about.profilePhoto}
                   onChange={(e) => setAbout({ ...about, profilePhoto: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none"
+                  style={{ background: "var(--secondary)", borderColor: "var(--border)", color: "var(--foreground)" }}
                 />
               </div>
             </div>
@@ -184,16 +189,18 @@ const ManageAbout = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6"
+            className="rounded-2xl shadow-lg p-6"
+            style={{ background: "var(--card)" }}
           >
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Skills</h2>
+            <h2 className="text-xl font-bold mb-6" style={{ color: "var(--foreground)" }}>Skills</h2>
             <div className="flex gap-2 mb-4">
               <input
                 type="text"
                 value={newSkill}
                 onChange={(e) => setNewSkill(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && addSkill()}
-                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                className="flex-1 px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none"
+                style={{ background: "var(--secondary)", borderColor: "var(--border)", color: "var(--foreground)" }}
                 placeholder="Add a skill"
               />
               <button
@@ -207,12 +214,14 @@ const ManageAbout = () => {
               {about.skills.map((skill, index) => (
                 <span
                   key={index}
-                  className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm"
+                  className="flex items-center gap-2 px-3 py-1 rounded-full text-sm"
+                  style={{ background: "var(--secondary)", color: "var(--foreground)" }}
                 >
                   {skill}
                   <button
                     onClick={() => removeSkill(index)}
-                    className="text-gray-500 hover:text-red-500"
+                    className="hover:text-red-500"
+                    style={{ color: "var(--muted-foreground)" }}
                   >
                     <FiTrash2 size={14} />
                   </button>
@@ -226,10 +235,11 @@ const ManageAbout = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6"
+            className="rounded-2xl shadow-lg p-6"
+            style={{ background: "var(--card)" }}
           >
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Experience</h2>
+              <h2 className="text-xl font-bold" style={{ color: "var(--foreground)" }}>Experience</h2>
               <button
                 onClick={addExperience}
                 className="flex items-center gap-2 px-3 py-1.5 text-sm text-blue-600 hover:text-blue-700 transition-colors"
@@ -240,12 +250,13 @@ const ManageAbout = () => {
             </div>
             <div className="space-y-4">
               {about.experience.map((exp, index) => (
-                <div key={index} className="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
+                <div key={index} className="p-4 rounded-xl" style={{ background: "var(--secondary)" }}>
                   <div className="flex justify-between items-start mb-3">
-                    <span className="text-sm font-medium text-gray-500">Experience {index + 1}</span>
+                    <span className="text-sm font-medium" style={{ color: "var(--muted-foreground)" }}>Experience {index + 1}</span>
                     <button
                       onClick={() => removeExperience(index)}
-                      className="text-gray-500 hover:text-red-500"
+                      className="hover:text-red-500"
+                      style={{ color: "var(--muted-foreground)" }}
                     >
                       <FiTrash2 size={16} />
                     </button>
@@ -255,28 +266,32 @@ const ManageAbout = () => {
                       type="text"
                       value={exp.role}
                       onChange={(e) => updateExperience(index, 'role', e.target.value)}
-                      className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                      className="px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                      style={{ background: "var(--card)", borderColor: "var(--border)", color: "var(--foreground)" }}
                       placeholder="Role"
                     />
                     <input
                       type="text"
                       value={exp.company}
                       onChange={(e) => updateExperience(index, 'company', e.target.value)}
-                      className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                      className="px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                      style={{ background: "var(--card)", borderColor: "var(--border)", color: "var(--foreground)" }}
                       placeholder="Company"
                     />
                     <input
                       type="text"
                       value={exp.period}
                       onChange={(e) => updateExperience(index, 'period', e.target.value)}
-                      className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                      className="px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                      style={{ background: "var(--card)", borderColor: "var(--border)", color: "var(--foreground)" }}
                       placeholder="Period (e.g., 2020 - 2022)"
                     />
                     <input
                       type="text"
                       value={exp.description}
                       onChange={(e) => updateExperience(index, 'description', e.target.value)}
-                      className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                      className="px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                      style={{ background: "var(--card)", borderColor: "var(--border)", color: "var(--foreground)" }}
                       placeholder="Description"
                     />
                   </div>
@@ -290,12 +305,13 @@ const ManageAbout = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6"
+            className="rounded-2xl shadow-lg p-6"
+            style={{ background: "var(--card)" }}
           >
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Social Links</h2>
+            <h2 className="text-xl font-bold mb-6" style={{ color: "var(--foreground)" }}>Social Links</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium mb-1" style={{ color: "var(--foreground)" }}>
                   GitHub
                 </label>
                 <input
@@ -305,11 +321,12 @@ const ManageAbout = () => {
                     ...about,
                     socialLinks: { ...about.socialLinks, github: e.target.value }
                   })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none"
+                  style={{ background: "var(--secondary)", borderColor: "var(--border)", color: "var(--foreground)" }}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium mb-1" style={{ color: "var(--foreground)" }}>
                   LinkedIn
                 </label>
                 <input
@@ -319,11 +336,12 @@ const ManageAbout = () => {
                     ...about,
                     socialLinks: { ...about.socialLinks, linkedin: e.target.value }
                   })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none"
+                  style={{ background: "var(--secondary)", borderColor: "var(--border)", color: "var(--foreground)" }}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium mb-1" style={{ color: "var(--foreground)" }}>
                   Twitter
                 </label>
                 <input
@@ -333,11 +351,12 @@ const ManageAbout = () => {
                     ...about,
                     socialLinks: { ...about.socialLinks, twitter: e.target.value }
                   })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none"
+                  style={{ background: "var(--secondary)", borderColor: "var(--border)", color: "var(--foreground)" }}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium mb-1" style={{ color: "var(--foreground)" }}>
                   Email
                 </label>
                 <input
@@ -347,7 +366,8 @@ const ManageAbout = () => {
                     ...about,
                     socialLinks: { ...about.socialLinks, email: e.target.value }
                   })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none"
+                  style={{ background: "var(--secondary)", borderColor: "var(--border)", color: "var(--foreground)" }}
                 />
               </div>
             </div>

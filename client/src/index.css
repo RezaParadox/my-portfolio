@@ -3,8 +3,6 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
   --background: #fafafa;
   --foreground: #1a0b2e;
@@ -39,10 +37,9 @@
   --sidebar-border: #f1f1f2;
   --sidebar-ring: #a78bfa;
 
-  --radius: 0.5rem; /* From your minimalist theme */
+  --radius: 0.5rem;
   --chart-line-color: 222 222 222;
 
-  /* Shadow properties for light mode */
   --shadow-color: 0 0 0;
   --shadow-opacity: 0.02;
   --shadow-blur: 2px;
@@ -52,68 +49,147 @@
   --shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur)
     var(--shadow-spread) rgb(var(--shadow-color) / var(--shadow-opacity));
 
-  /* Letter spacing for light mode */
   --letter-spacing: -0.01em;
+
+  /* Navbar */
+  --navbar-bg: rgba(255, 255, 255, 0.8);
+  --navbar-border: rgba(0, 0, 0, 0.08);
+  --navbar-text: #374151;
+  --navbar-text-hover: #111827;
+  --navbar-text-active: #7c3aed;
+  --navbar-mobile-bg: rgba(255, 255, 255, 0.95);
+  --navbar-mobile-border: rgba(0, 0, 0, 0.08);
+
+  /* Footer */
+  --footer-bg: #f5f5f5;
+  --footer-border: rgba(139, 92, 246, 0.3);
+  --footer-shadow: 0 0 30px rgba(139, 92, 246, 0.1);
+  --footer-title: #1a0b2e;
+  --footer-text: #6b7280;
+  --footer-heading: #1a0b2e;
+  --footer-divider: rgba(0, 0, 0, 0.1);
+  --footer-big-text: rgba(139, 92, 246, 0.3);
+  --footer-social-bg: rgba(0, 0, 0, 0.05);
+  --footer-social-border: rgba(0, 0, 0, 0.1);
+  --footer-social-text: #6b7280;
+
+  /* Cards */
+  --card-skill-bg: #ffffff;
+  --card-skill-border: rgba(0, 0, 0, 0.08);
+  --card-skill-border-hover: rgba(139, 92, 246, 0.6);
+  --card-skill-shadow-hover: 0 0 20px rgba(139, 92, 246, 0.2), 0 0 60px rgba(139, 92, 246, 0.08);
+  --card-skill-text: #1f2937;
+  --card-skill-icon: #6b7280;
+  --card-service-bg: #ffffff;
+  --card-service-border: rgba(0, 0, 0, 0.08);
+  --card-service-border-hover: rgba(139, 92, 246, 0.6);
+  --card-service-shadow-hover: 0 0 20px rgba(139, 92, 246, 0.2), 0 0 60px rgba(139, 92, 246, 0.08);
+  --card-service-title: #1f2937;
+  --card-service-text: #6b7280;
+  --card-project-bg: rgba(255, 255, 255, 0.6);
+  --card-project-border: rgba(0, 0, 0, 0.08);
+  --card-project-text: #1f2937;
+  --card-project-desc: #6b7280;
+
+  /* Sections */
+  --section-heading: #1f2937;
+  --section-text: #374151;
+  --section-text-muted: #6b7280;
+  --section-about-bg: rgba(255, 255, 255, 0.3);
+  --section-about-border: rgba(0, 0, 0, 0.08);
+  --section-about-overlay: rgba(0, 0, 0, 0.1);
+  --section-stats-border: #d1d5db;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #f5f3ff;
-    --card: #111111;
-    --card-foreground: #f5f3ff;
-    --popover: #111111;
-    --popover-foreground: #f5f3ff;
-    --primary: #a855f7;
-    --primary-foreground: #ffffff;
-    --secondary: #1a1a1a;
-    --secondary-foreground: #e9d5ff;
-    --muted: #141414;
-    --muted-foreground: #94a3b8;
-    --accent: #1a1a1a;
-    --accent-foreground: #ddd6fe;
-    --destructive: #7f1d1d;
-    --destructive-foreground: #fef2f2;
-    --border: #262626;
-    --input: #262626;
-    --ring: #d8b4fe;
-    --chart-1: #a855f7;
-    --chart-2: #e879f9;
-    --chart-3: #34d399;
-    --chart-4: #facc15;
-    --chart-5: #fb7185;
-    --sidebar: #0d0d0d;
-    --sidebar-foreground: #f5f3ff;
-    --sidebar-primary: #a855f7;
-    --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: #1a1a1a;
-    --sidebar-accent-foreground: #e9d5ff;
-    --sidebar-border: #141414;
-    --sidebar-ring: #d8b4fe;
+.dark {
+  --background: #0a0a1a;
+  --foreground: #f0f0f5;
+  --card: #0d0d1a;
+  --card-foreground: #f0f0f5;
+  --popover: #0d0d1a;
+  --popover-foreground: #f0f0f5;
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #1a1a2e;
+  --secondary-foreground: #c4b5fd;
+  --muted: #1a1a2e;
+  --muted-foreground: #9ca3af;
+  --accent: #1a1a2e;
+  --accent-foreground: #c4b5fd;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #a78bfa;
+  --chart-1: #7c3aed;
+  --chart-2: #d946ef;
+  --chart-3: #2dd4bf;
+  --chart-4: #fbbf24;
+  --chart-5: #f43f5e;
+  --sidebar: #0d0d1a;
+  --sidebar-foreground: #f0f0f5;
+  --sidebar-primary: #8b5cf6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1a1a2e;
+  --sidebar-accent-foreground: #c4b5fd;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #a78bfa;
 
-    /* Radius is often the same for both modes unless specified */
-    --radius: 0.5rem;
-    --chart-line-color: 51 51 51;
+  --shadow-color: 168 85 247;
+  --shadow-opacity: 0.15;
 
-    /* Shadow properties for dark mode */
-    --shadow-color: 0 0 0; /* Or 168 85 247 if you prefer the purple tint */
-    --shadow-opacity: 0.2;
-    --shadow-blur: 4px;
-    --shadow-spread: 0px;
-    --shadow-offset-x: 0px;
-    --shadow-offset-y: 2px;
-    --shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur)
-      var(--shadow-spread) rgb(var(--shadow-color) / var(--shadow-opacity));
+  /* Navbar */
+  --navbar-bg: rgba(15, 15, 30, 0.8);
+  --navbar-border: rgba(255, 255, 255, 0.1);
+  --navbar-text: #d1d5db;
+  --navbar-text-hover: #ffffff;
+  --navbar-text-active: #a78bfa;
+  --navbar-mobile-bg: rgba(15, 15, 30, 0.95);
+  --navbar-mobile-border: rgba(255, 255, 255, 0.1);
 
-    /* Letter spacing for dark mode */
-    --letter-spacing: 0em;
-  }
+  /* Footer */
+  --footer-bg: #0d0d1a;
+  --footer-border: rgba(168, 85, 247, 0.4);
+  --footer-shadow: 0 0 30px rgba(168, 85, 247, 0.2), 0 0 80px rgba(168, 85, 247, 0.08);
+  --footer-title: #ffffff;
+  --footer-text: #9ca3af;
+  --footer-heading: #ffffff;
+  --footer-divider: rgba(255, 255, 255, 0.1);
+  --footer-big-text: rgba(168, 85, 247, 0.5);
+  --footer-social-bg: rgba(255, 255, 255, 0.05);
+  --footer-social-border: rgba(255, 255, 255, 0.1);
+  --footer-social-text: #9ca3af;
+
+  /* Cards */
+  --card-skill-bg: #0d0d1a;
+  --card-skill-border: rgba(255, 255, 255, 0.08);
+  --card-skill-border-hover: rgba(168, 85, 247, 0.6);
+  --card-skill-shadow-hover: 0 0 20px rgba(168, 85, 247, 0.4), 0 0 60px rgba(168, 85, 247, 0.15), inset 0 0 30px rgba(168, 85, 247, 0.08);
+  --card-skill-text: #ffffff;
+  --card-skill-icon: #9ca3af;
+  --card-service-bg: #0d0d1a;
+  --card-service-border: rgba(255, 255, 255, 0.08);
+  --card-service-border-hover: rgba(168, 85, 247, 0.6);
+  --card-service-shadow-hover: 0 0 20px rgba(168, 85, 247, 0.4), 0 0 60px rgba(168, 85, 247, 0.15), inset 0 0 30px rgba(168, 85, 247, 0.08);
+  --card-service-title: #ffffff;
+  --card-service-text: #d1d5db;
+  --card-project-bg: rgba(255, 255, 255, 0.1);
+  --card-project-border: rgba(255, 255, 255, 0.1);
+  --card-project-text: #ffffff;
+  --card-project-desc: #d1d5db;
+
+  /* Sections */
+  --section-heading: #ffffff;
+  --section-text: #d1d5db;
+  --section-text-muted: #9ca3af;
+  --section-about-bg: rgba(255, 255, 255, 0.1);
+  --section-about-border: rgba(255, 255, 255, 0.1);
+  --section-about-overlay: rgba(0, 0, 0, 0.3);
+  --section-stats-border: #4b5563;
 }
 
-/* Apply the shadow and letter spacing globally or to specific elements as needed */
 html {
   scroll-behavior: smooth;
-  box-shadow: var(--shadow);
   letter-spacing: var(--letter-spacing);
 }
 
@@ -125,6 +201,7 @@ body {
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 * {
@@ -205,4 +282,27 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shimmer 10s linear infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3b82f6, #8b5cf6, #ec4899);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #60a5fa, #a78bfa, #f472b6);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #8b5cf6 #0a0a1a;
 }

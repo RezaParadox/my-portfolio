@@ -67,7 +67,7 @@ const Dashboard = () => {
   }
 
   return (
-    <section className='min-h-screen py-20 px-4 sm:px-6 lg:px-8'>
+    <section className='min-h-screen py-20 px-4 sm:px-6 lg:px-8' style={{ background: "var(--background)" }}>
       <div className='max-w-6xl mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -75,10 +75,10 @@ const Dashboard = () => {
           transition={{ duration: 0.6 }}
           className='mb-12'
         >
-          <h1 className='text-4xl font-bold text-white mb-2'>
+          <h1 className='text-4xl font-bold mb-2' style={{ color: "var(--foreground)" }}>
             Dashboard
           </h1>
-          <p className='text-gray-600 dark:text-gray-400'>
+          <p style={{ color: "var(--muted-foreground)" }}>
             Manage your portfolio content
           </p>
         </motion.div>
@@ -93,7 +93,8 @@ const Dashboard = () => {
             >
               <Link
                 to={card.link}
-                className='block bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow'
+                className='block rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow'
+                style={{ background: "var(--card)" }}
               >
                 <div className='flex items-start justify-between'>
                   <div className={`p-3 rounded-xl ${card.color}`}>
@@ -105,10 +106,10 @@ const Dashboard = () => {
                     </span>
                   )}
                 </div>
-                <h3 className='text-lg font-semibold text-gray-900 dark:text-white mt-4'>
+                <h3 className='text-lg font-semibold mt-4' style={{ color: "var(--foreground)" }}>
                   {card.title}
                 </h3>
-                <p className='text-3xl font-bold text-gray-900 dark:text-white mt-2'>
+                <p className='text-3xl font-bold mt-2' style={{ color: "var(--foreground)" }}>
                   {card.count !== null ? card.count : "—"}
                 </p>
               </Link>

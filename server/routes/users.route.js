@@ -21,7 +21,7 @@ import {
   // Upload
   uploadImage,
 } from "../controller/users.controller.js";
-import { protect } from "../middleware/auth.js";
+import { protect, adminOnly } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -34,20 +34,20 @@ router.post("/verify-otp", verifyOtp);
 // ===================== USER PROFILE =====================
 router.get("/me", protect, getMe);
 router.put("/me", protect, updateProfile);
-router.get("/", protect, getUsers);
-router.delete("/:id", protect, deleteUser);
+router.get("/", protect, adminOnly, getUsers);
+router.delete("/:id", protect, adminOnly, deleteUser);
 
 // ===================== ABOUT =====================
 router.get("/about", getAbout);
-router.put("/about", protect, updateAbout);
+router.put("/about", protect, adminOnly, updateAbout);
 
 // ===================== MESSAGES =====================
 router.post("/contact", sendMessage);
-router.get("/messages", protect, getMessages);
-router.put("/messages/:id/read", protect, markAsRead);
-router.delete("/messages/:id", protect, deleteMessage);
+router.get("/messages", protect, adminOnly, getMessages);
+router.put("/messages/:id/read", protect, adminOnly, markAsRead);
+router.delete("/messages/:id", protect, adminOnly, deleteMessage);
 
 // ===================== UPLOAD =====================
-router.post("/upload", protect, uploadImage);
+router.post("/upload", protect, adminOnly, uploadImage);
 
 export default router;

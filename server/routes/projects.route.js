@@ -1,5 +1,5 @@
 import express from "express";
-import { getProjects, getProject, createProject, updateProject, deleteProject } from "../controller/projects.controller.js";
+import { getProjects, getProject, createProject, updateProject, deleteProject, uploadProjectImages } from "../controller/projects.controller.js";
 import { protect } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -10,6 +10,7 @@ router.get("/:id", getProject);
 
 // Protected (admin)
 router.post("/", protect, createProject);
+router.post("/upload", protect, uploadProjectImages);
 router.put("/:id", protect, updateProject);
 router.delete("/:id", protect, deleteProject);
 
