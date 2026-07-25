@@ -33,6 +33,47 @@ const Dashboard = () => {
     fetchStats();
   }, []);
 
+  const handleSaveSettings = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      const payload = new FormData();
+      if (formData.name) payload.append("name", formData.name);
+      if (formData.email) payload.append("email", formData.email);
+      if (typeof formData.bio !== "undefined")
+        payload.append("bio", formData.bio);
+
+      if (formData.newPassword) {
+        payload.append("newPassword", formData.newPassword);
+        if (formData.currentPassword) {
+          payload.append("currentPassword", formData.currentPassword);
+        }
+      }
+
+      if (formData.avatarFile) {
+        payload.append("avatar", formData.avatarFile);
+      }
+      if (formData.coverPhotoFile) {
+        payload.append("coverPhoto", formData.coverPhotoFile);
+      }
+
+      const response = await axios.put(`${API_BASE}/users/profile`, payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data && response.data.user) {
+        setUser(response.data.user);
+      }
+      setOpen(false);
+    } catch (error) {
+      console.error("Failed to update profile settings", error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const cards = [
     {
       title: "Projects",
