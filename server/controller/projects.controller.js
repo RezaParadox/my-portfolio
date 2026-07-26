@@ -11,7 +11,7 @@ export const uploadProjectImages = [
         return res.status(400).json({ message: "No files uploaded" });
       }
       const uploadPromises = req.files.map((file) =>
-        streamUpload(file.buffer, "project/images", "image")
+        streamUpload(file.buffer, "project/images", "image"),
       );
       const results = await Promise.all(uploadPromises);
       const urls = results.map((result) => result.secure_url);
@@ -51,86 +51,54 @@ export const createProject = async (req, res) => {
   try {
     const {
       title,
-      content,
-      excerpt,
-      category,
-      isSpecial,
-      isFeatured: featuredFlag,
-      hashtags,
+      description,
+      image,
+      images,
+      techTags,
+      liveUrl,
+      githubUrl,
+      featured,
     } = req.body;
-    let imageUrl = "";
-    let coverUrl = "";
 
-    // Upload image to Cloudinary if provided
-    if (req.file) {
-      try {
-        if (process.env.CLOUDINARY_API_KEY) {
-          const result = await streamUpload(req.file.buffer, "project/posts");
-          imageUrl = result.secure_url;
-          coverUrl = result.secure_url;
-        } else {
-          console.warn("Cloudinary not configured; skipping image upload.");
-        }
-      } catch (uploadErr) {
-        console.error("Image upload error:", uploadErr);
-        return res.status(500).json({
-          success: false,
-          message: uploadErr.message || "Image upload failed",
-        });
-      }
+    if (!title || !description) {
+      return res
+        .status(400)
+        .json({ message: "Title and description are required" });
     }
 
-    // Calculate read time
-    const wordCount = content.split(/\s+/).length;
-    const readTime = Math.ceil(wordCount / 200);
-
-    // Parse hashtags
-    let parsedHashtags = [];
-    const rawHashtags = hashtags || req.body["hashtags[]"];
-
-    if (rawHashtags) {
+    let parsedTechTags = [];
+    if (typeof techTags === "string") {
       try {
-        if (Array.isArray(rawHashtags)) {
-          parsedHashtags = rawHashtags;
-        } else if (typeof rawHashtags === "string") {
-          try {
-            parsedHashtags = JSON.parse(rawHashtags);
-          } catch (parseError) {
-            parsedHashtags = [rawHashtags];
-          }
-        }
-
-        parsedHashtags = parsedHashtags
-          .filter((tag) => typeof tag === "string" && tag.trim())
-          .map((tag) => tag.trim().replace(/^#/, ""));
-      } catch (e) {
-        parsedHashtags = [];
+        parsedTechTags = JSON.parse(techTags);
+      } catch {
+        parsedTechTags = techTags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean);
       }
+    } else if (Array.isArray(techTags)) {
+      parsedTechTags = techTags;
     }
 
-    // If this project is marked special, make it the featured project
     const isFeatured =
-      featuredFlag === "true" ||
-      featuredFlag === true ||
-      isSpecial === "true" ||
-      isSpecial === true;
+      featured === "true" ||
+      featured === true ||
+      featured === 1 ||
+      featured === "1";
+
     if (isFeatured) {
-      await Project.updateMany({}, { isFeatured: false });
+      await Project.updateMany({}, { featured: false });
     }
 
-    // Create new project
     const newProject = await Project.create({
       title,
-      content,
-      excerpt: excerpt || "",
-      category,
-      hashtags: parsedHashtags,
-      image: imageUrl,
-      cover: coverUrl,
-      author: req.user.id,
-      isSpecial: isFeatured,
-      isFeatured,
-      readTime: `${readTime} min read`,
+      description,
+      image: image || "",
+      images: Array.isArray(images) ? images : images ? [images] : [],
+      techTags: parsedTechTags,
+      liveUrl: liveUrl || "",
+      githubUrl: githubUrl || "",
+      featured: isFeatured,
     });
 
     res.status(201).json({
@@ -139,7 +107,7 @@ export const createProject = async (req, res) => {
       message: "Project created successfully",
     });
   } catch (error) {
-    console.error("Create Post Error:", error);
+    console.error("Create Project Error:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -150,10 +118,62 @@ export const createProject = async (req, res) => {
 // Update project (auth required)
 export const updateProject = async (req, res) => {
   try {
-    const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const {
+      title,
+      description,
+      image,
+      images,
+      techTags,
+      liveUrl,
+      githubUrl,
+      featured,
+    } = req.body;
+
+    let parsedTechTags = [];
+    if (typeof techTags === "string") {
+      try {
+        parsedTechTags = JSON.parse(techTags);
+      } catch {
+        parsedTechTags = techTags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean);
+      }
+    } else if (Array.isArray(techTags)) {
+      parsedTechTags = techTags;
+    }
+
+    const isFeatured =
+      featured === "true" ||
+      featured === true ||
+      featured === 1 ||
+      featured === "1";
+
+    if (isFeatured) {
+      await Project.updateMany({}, { featured: false });
+    }
+
+    const updatedData = {
+      ...(title !== undefined && { title }),
+      ...(description !== undefined && { description }),
+      ...(image !== undefined && { image }),
+      ...(images !== undefined && {
+        images: Array.isArray(images) ? images : images ? [images] : [],
+      }),
+      ...(techTags !== undefined && { techTags: parsedTechTags }),
+      ...(liveUrl !== undefined && { liveUrl }),
+      ...(githubUrl !== undefined && { githubUrl }),
+      ...(featured !== undefined && { featured: isFeatured }),
+    };
+
+    const project = await Project.findByIdAndUpdate(
+      req.params.id,
+      updatedData,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }

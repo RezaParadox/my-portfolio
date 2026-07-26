@@ -371,7 +371,7 @@ const ManageProjects = () => {
                 <div>
                   <label className="block text-sm font-medium mb-1" style={{ color: "var(--foreground)" }}>Tech Tags</label>
                   <div
-                    className="w-full px-4 py-2 rounded-lg border flex flex-wrap gap-2 min-h-[42px] items-center"
+                    className="w-full px-4 py-2 rounded-lg border flex flex-wrap gap-2 min-h-10.5 items-center"
                     style={{ background: "var(--secondary)", borderColor: "var(--border)" }}
                   >
                     {formData.techTags.map((tag, index) => (
@@ -391,7 +391,7 @@ const ManageProjects = () => {
                       onChange={(e) => setFormData({ ...formData, tagInput: e.target.value })}
                       onKeyDown={handleTagKeyDown}
                       placeholder={formData.techTags.length === 0 ? "Type a tag and press Enter" : ""}
-                      className="flex-1 min-w-[120px] bg-transparent outline-none text-sm"
+                      className="flex-1 min-w-30 bg-transparent outline-none text-sm"
                       style={{ color: "var(--foreground)" }}
                     />
                   </div>
