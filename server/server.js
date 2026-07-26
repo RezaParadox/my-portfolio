@@ -12,9 +12,6 @@ import projects from "./routes/projects.route.js";
 // DB
 import connectDB from "./config/db.js";
 
-// Email
-import { verifyEmailConfig } from "./utils/email.js";
-
 dotenv.config();
 
 connectDB();

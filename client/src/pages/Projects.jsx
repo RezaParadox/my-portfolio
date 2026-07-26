@@ -1,20 +1,23 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FiExternalLink, FiGithub } from 'react-icons/fi';
-import api from '../utils/api';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FiExternalLink, FiGithub } from "react-icons/fi";
+import api from "../utils/api";
+
+const PAGE_SIZE = 12;
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await api.get('/projects');
+        const res = await api.get("/projects");
         setProjects(res.data);
       } catch (err) {
-        console.error('Failed to fetch projects');
+        console.error("Failed to fetch projects");
       } finally {
         setLoading(false);
       }
@@ -22,113 +25,174 @@ const Projects = () => {
     fetchProjects();
   }, []);
 
+  const totalPages = Math.max(1, Math.ceil(projects.length / PAGE_SIZE));
+  const currentProjects = projects.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE,
+  );
+
+  const goToPage = (page) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+      <div className='min-h-screen flex items-center justify-center'>
+        <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500'></div>
       </div>
     );
   }
 
   return (
-    <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
+    <section className='min-h-screen py-20 px-4 sm:px-6 lg:px-8'>
+      <div className='max-w-6xl mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className='text-center mb-16'
         >
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Projects</h1>
-          <div className="w-20 h-1 bg-purple-500 mx-auto"></div>
+          <h1 className='text-4xl font-bold text-gray-900 dark:text-white mb-4'>
+            Projects
+          </h1>
+          <div className='w-20 h-1 bg-purple-500 mx-auto'></div>
         </motion.div>
 
         {projects.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-12"
+            className='text-center py-12'
           >
-            <p className="text-gray-500 dark:text-gray-400 text-lg">
+            <p className='text-gray-500 dark:text-gray-400 text-lg'>
               No projects yet. Add some from the admin dashboard!
             </p>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-              <motion.div
-                key={project._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                whileHover={{
-                  scale: 1.03,
-                  transition: { duration: 0.15 }
-                }}
-              >
-              <Link
-                to={`/projects/${project._id}`}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl cursor-pointer flex flex-col block"
-              >
-                {project.image && (
-                  <div className="relative w-full h-48 overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 shadow-[inset_0_-20px_30px_rgba(88,28,135,0.6)] pointer-events-none" />
-                  </div>
-                )}
-                <div className="p-5 flex flex-col gap-3">
-                  <div className="flex flex-wrap gap-1.5">
-                    {(Array.isArray(project.techTags) ? project.techTags : typeof project.techTags === 'string' ? project.techTags.split(',').map(t => t.trim()).filter(Boolean) : []).map((tag, tagIndex) => (
-                      <span
-                        key={tagIndex}
-                        className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-[11px] rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="w-full h-px bg-gray-200 dark:bg-gray-700" />
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2">
-                      {project.description}
-                    </p>
-                  </div>
-                  <div className="flex gap-4 mt-1">
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-                      >
-                        <FiExternalLink size={14} />
-                        Live Demo
-                      </a>
+          <>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+              {currentProjects.map((project, index) => (
+                <motion.div
+                  key={project._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  whileHover={{
+                    scale: 1.03,
+                    transition: { duration: 0.15 },
+                  }}
+                >
+                  <Link
+                    to={`/projects/${project._id}`}
+                    className='bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl cursor-pointer flex flex-col'
+                  >
+                    {project.image && (
+                      <div className='relative w-full h-48 overflow-hidden'>
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className='w-full h-full object-cover'
+                        />
+                        <div className='absolute inset-0 shadow-[inset_0_-20px_30px_rgba(88,28,135,0.6)] pointer-events-none' />
+                      </div>
                     )}
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-                      >
-                        <FiGithub size={14} />
-                        Code
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </Link>
-              </motion.div>
-            ))}
-          </div>
+                    <div className='p-5 flex flex-col gap-3'>
+                      <div className='flex flex-wrap gap-1.5'>
+                        {(Array.isArray(project.techTags)
+                          ? project.techTags
+                          : typeof project.techTags === "string"
+                            ? project.techTags
+                                .split(",")
+                                .map((t) => t.trim())
+                                .filter(Boolean)
+                            : []
+                        ).map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className='px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-[11px] rounded-full'
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <div className='w-full h-px bg-gray-200 dark:bg-gray-700' />
+                      <div>
+                        <h3 className='text-lg font-bold text-gray-900 dark:text-white mb-1'>
+                          {project.title}
+                        </h3>
+                        <p className='text-gray-600 dark:text-gray-300 text-sm line-clamp-2'>
+                          {project.description}
+                        </p>
+                      </div>
+                      <div className='flex gap-4 mt-1'>
+                        {project.liveUrl && (
+                          <a
+                            href={project.liveUrl}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors'
+                          >
+                            <FiExternalLink size={14} />
+                            Live Demo
+                          </a>
+                        )}
+                        {project.githubUrl && (
+                          <a
+                            href={project.githubUrl}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors'
+                          >
+                            <FiGithub size={14} />
+                            Code
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className='mt-12 flex flex-col gap-4 items-center justify-center'>
+              <div className='flex flex-wrap items-center gap-2'>
+                <button
+                  onClick={() => goToPage(currentPage - 1)}
+                  className='px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-sm font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors'
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+                <span className='text-sm text-gray-700 dark:text-gray-300'>
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => goToPage(currentPage + 1)}
+                  className='px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-sm font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors'
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
+              <div className='flex flex-wrap justify-center gap-2'>
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => goToPage(index + 1)}
+                    className={`px-3 py-2 rounded-full text-sm font-medium transition-colors ${
+                      currentPage === index + 1
+                        ? "bg-purple-600 text-white"
+                        : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
         )}
       </div>
     </section>

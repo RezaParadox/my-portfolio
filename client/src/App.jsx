@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
+import Projects from "./pages/Projects";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VerifyOTP from "./pages/VerifyOTP";
@@ -16,7 +17,6 @@ import ManageAbout from "./pages/ManageAbout";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 
 function App() {
   return (
@@ -29,6 +29,7 @@ function App() {
               <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/contact' element={<Contact />} />
+                <Route path='/projects' element={<Projects />} />
                 <Route path='/projects/:id' element={<ProjectDetail />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
@@ -76,7 +77,6 @@ function App() {
               </Routes>
             </main>
 
-         
             <Footer />
           </div>
         </Router>

@@ -39,9 +39,9 @@ export default function ThumbnailScroll({ images = [] }) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className=" w-full mx-auto p-6">
       {/* ───────── Main Image ───────── */}
-      <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shadow-lg mb-4">
+      <div className="relative w-full aspect-4/3 rounded-2xl overflow-hidden bg-gray-100 shadow-lg mb-4">
         <img
           src={images[activeIndex]}
           alt={`Slide ${activeIndex + 1}`}
@@ -114,7 +114,7 @@ export default function ThumbnailScroll({ images = [] }) {
                 hover:scale-105 hover:shadow-md
                 ${
                   activeIndex === index
-                    ? "ring-2 ring-blue-500 ring-offset-2 scale-105 shadow-md"
+                    ? "ring-2 ring-purple-400 ring-offset-2 scale-105 shadow-md"
                     : "opacity-70 hover:opacity-100"
                 }
               `}

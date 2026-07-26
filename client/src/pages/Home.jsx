@@ -18,6 +18,7 @@ import {
   FaNpm,
   FaGithub,
   FaGitAlt,
+  FaDocker,
 } from "react-icons/fa";
 import {
   SiTypescript,
@@ -26,6 +27,7 @@ import {
   SiTailwindcss,
   SiPnpm,
   SiNextdotjs,
+  SiMysql,
 } from "react-icons/si";
 import DotGrid from "../components/DotGrid";
 import api from "../utils/api";
@@ -45,6 +47,8 @@ const skills = [
   { name: "pnpm", icon: SiPnpm },
   { name: "GitHub", icon: FaGithub },
   { name: "Git", icon: FaGitAlt },
+  { name: "Docker", icon: FaDocker },
+  { name: "MySQL", icon: SiMysql },
 ];
 
 const FloatingDots = ({ isHovered }) => {
@@ -283,6 +287,12 @@ const Home = () => {
     };
     fetchProjects();
   }, []);
+
+  const featuredProjects = projects.slice(0, 9);
+
+  const handleSeeAllProjects = () => {
+    navigate("/projects");
+  };
 
   const scrollTo = (hash) => {
     const el = document.querySelector(hash);
@@ -608,6 +618,7 @@ const Home = () => {
       </section>
 
       {/* Projects Section ---------------------------------------------- */}
+      {/* Featured Projects Preview Section */}
       <section
         id='projects'
         className='relative z-10 py-20 px-4 sm:px-6 lg:px-8'
@@ -624,84 +635,96 @@ const Home = () => {
               className='text-3xl sm:text-4xl font-bold mb-4 uppercase'
               style={{ color: "var(--section-heading)" }}
             >
-              Projects I've created
+              Projects I&apos;ve Created
             </h2>
-          </motion.div>
-
-          {projects.length === 0 ? (
             <p
-              className='text-center'
+              className='max-w-2xl mx-auto text-sm sm:text-base'
               style={{ color: "var(--section-text-muted)" }}
             >
-              No projects yet.
+              A selection of my recent work. Click through to see the full
+              collection.
             </p>
+          </motion.div>
+
+          {featuredProjects.length === 0 ? (
+            <div
+              className='text-center py-12 rounded-2xl'
+              style={{ background: "var(--card)" }}
+            >
+              <p style={{ color: "var(--muted-foreground)" }}>
+                Projects are loading or not available yet.
+              </p>
+            </div>
           ) : (
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-              {projects.map((project, index) => (
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+              {featuredProjects.map((project, index) => (
                 <motion.div
                   key={project._id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  whileHover={{
-                    scale: 1.03,
-                    transition: { duration: 0.15 },
-                  }}
-                >
-                <Link
-                  to={`/projects/${project._id}`}
-                  className='backdrop-blur-xl rounded-2xl overflow-hidden cursor-pointer flex flex-col transition-colors duration-300 block'
-                  style={{
-                    background: "var(--card-project-bg)",
-                    border: "1px solid var(--card-project-border)",
-                  }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className='rounded-2xl shadow-lg overflow-hidden'
+                  style={{ background: "var(--card)" }}
                 >
                   {project.image && (
-                    <div className='relative w-full h-48 overflow-hidden'>
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className='w-full h-full object-cover'
-                      />
-                      <div className='absolute inset-0 shadow-[inset_0_-20px_30px_rgba(88,28,135,0.6)] pointer-events-none' />
-                    </div>
-                  )}
-                  <div className='p-5 flex flex-col gap-3'>
-                    <div className='flex flex-wrap gap-1.5'>
-                      {(Array.isArray(project.techTags) ? project.techTags : typeof project.techTags === 'string' ? project.techTags.split(',').map(t => t.trim()).filter(Boolean) : []).map((tag, tagIndex) => (
-                        <span
-                          key={tagIndex}
-                          className='px-2 py-0.5 bg-purple-500/20 text-purple-300 text-[11px] rounded-full'
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div
-                      className='w-full h-px'
-                      style={{ background: "var(--footer-divider)" }}
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className='w-full h-44 object-cover'
                     />
-                    <div>
-                      <h3
-                        className='text-lg font-bold mb-1'
-                        style={{ color: "var(--card-project-text)" }}
-                      >
-                        {project.title}
-                      </h3>
-                      <p
-                        className='text-sm line-clamp-2'
-                        style={{ color: "var(--card-project-desc)" }}
-                      >
-                        {project.description}
-                      </p>
+                  )}
+                  <div className='p-5'>
+                    <h3
+                      className='text-xl font-semibold mb-2'
+                      style={{ color: "var(--foreground)" }}
+                    >
+                      {project.title}
+                    </h3>
+                    <p
+                      className='text-sm mb-4 line-clamp-3'
+                      style={{ color: "var(--muted-foreground)" }}
+                    >
+                      {project.description}
+                    </p>
+                    <div className='flex flex-wrap gap-2'>
+                      {(Array.isArray(project.techTags)
+                        ? project.techTags
+                        : typeof project.techTags === "string"
+                          ? project.techTags
+                              .split(",")
+                              .map((t) => t.trim())
+                              .filter(Boolean)
+                          : []
+                      )
+                        .slice(0, 3)
+                        .map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className='px-3 py-1 rounded-full text-xs font-medium'
+                            style={{
+                              background: "rgba(168, 85, 247, 0.12)",
+                              color: "var(--foreground)",
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
                     </div>
                   </div>
-                  </Link>
                 </motion.div>
               ))}
             </div>
           )}
+
+          <div className='mt-10 text-center'>
+            <button
+              onClick={handleSeeAllProjects}
+              className='inline-flex items-center justify-center gap-2 px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-full transition-colors'
+            >
+              See All Projects
+            </button>
+          </div>
         </div>
       </section>
     </div>

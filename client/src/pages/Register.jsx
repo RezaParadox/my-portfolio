@@ -53,8 +53,8 @@ const Register = () => {
 
     setLoading(true);
     try {
-      await axios.post("/api/users/send-otp", { email: formData.email });
-      navigate("/verify-otp", {
+      await axios.post("/api/users/register", { email: formData.email });
+      navigate("/login", {
         state: {
           email: formData.email,
           fullName: formData.fullName,

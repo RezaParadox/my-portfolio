@@ -86,7 +86,7 @@ const Profile = () => {
       >
         {/* Card with purple gradient border + shadow */}
         <div
-          className='relative rounded-2xl p-[1px] bg-gradient-to-br from-purple-500 via-violet-500 to-fuchsia-500'
+          className='relative rounded-2xl p-px bg-linear-to-br from-purple-500 via-violet-500 to-fuchsia-500'
           style={{ boxShadow: '0 0 30px rgba(139, 92, 246, 0.2), 0 10px 40px rgba(139, 92, 246, 0.1)' }}
         >
           <div className='rounded-2xl p-8 transition-colors duration-300' style={{ background: "var(--card)" }}>

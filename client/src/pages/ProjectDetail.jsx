@@ -82,7 +82,7 @@ const ProjectDetail = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-xl mb-8"
+            className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl mb-8"
           >
             <img
               src={project.image}
@@ -150,7 +150,7 @@ const ProjectDetail = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mb-10"
+            className="mb-10 w-full"
           >
             <ThumbnailScroll images={allImages} />
           </motion.div>
@@ -168,7 +168,7 @@ const ProjectDetail = () => {
             <h2 className="text-xl font-semibold mb-4" style={{ color: "var(--foreground)" }}>
               About this project
             </h2>
-            <div className="w-12 h-1 bg-purple-500 rounded-full mb-6" />
+            <div className="w-28 h-1 bg-purple-500 rounded-full mb-6" />
             <p className="leading-relaxed whitespace-pre-wrap" style={{ color: "var(--muted-foreground)" }}>
               {project.description}
             </p>
