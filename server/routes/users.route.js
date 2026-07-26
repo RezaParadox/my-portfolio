@@ -18,8 +18,6 @@ import {
   getMessages,
   markAsRead,
   deleteMessage,
-  // Upload
-  uploadImage,
 } from "../controller/users.controller.js";
 import { protect, adminOnly } from "../middleware/auth.js";
 
@@ -46,8 +44,5 @@ router.post("/contact", sendMessage);
 router.get("/messages", protect, adminOnly, getMessages);
 router.put("/messages/:id/read", protect, adminOnly, markAsRead);
 router.delete("/messages/:id", protect, adminOnly, deleteMessage);
-
-// ===================== UPLOAD =====================
-router.post("/upload", protect, adminOnly, uploadImage);
 
 export default router;

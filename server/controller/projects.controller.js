@@ -1,39 +1,20 @@
 import Project from "../models/Project.js";
-import multer from "multer";
-import path from "path";
+import { streamUpload } from "../utils/cloudinary.js";
+import { editorMediaUpload } from "../middleware/uploadMiddleware.js";
 
-// Multer config for project images
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/"),
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif|webp/;
-  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = allowedTypes.test(file.mimetype);
-  if (extname && mimetype) return cb(null, true);
-  cb(new Error("Only image files are allowed"));
-};
-
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
-});
-
-// Upload project images
+// Upload project images to Cloudinary
 export const uploadProjectImages = [
-  upload.array("images", 20),
-  (req, res) => {
+  editorMediaUpload.array("images", 20),
+  async (req, res) => {
     try {
       if (!req.files || req.files.length === 0) {
         return res.status(400).json({ message: "No files uploaded" });
       }
-      const urls = req.files.map((file) => `/uploads/${file.filename}`);
+      const uploadPromises = req.files.map((file) =>
+        streamUpload(file.buffer, "project/images", "image")
+      );
+      const results = await Promise.all(uploadPromises);
+      const urls = results.map((result) => result.secure_url);
       res.json({ urls });
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -65,12 +46,104 @@ export const getProject = async (req, res) => {
 };
 
 // Create project (auth required)
+
 export const createProject = async (req, res) => {
   try {
-    const project = await Project.create(req.body);
-    res.status(201).json(project);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    const {
+      title,
+      content,
+      excerpt,
+      category,
+      isSpecial,
+      isFeatured: featuredFlag,
+      hashtags,
+    } = req.body;
+    let imageUrl = "";
+    let coverUrl = "";
+
+    // Upload image to Cloudinary if provided
+    if (req.file) {
+      try {
+        if (process.env.CLOUDINARY_API_KEY) {
+          const result = await streamUpload(req.file.buffer, "project/posts");
+          imageUrl = result.secure_url;
+          coverUrl = result.secure_url;
+        } else {
+          console.warn("Cloudinary not configured; skipping image upload.");
+        }
+      } catch (uploadErr) {
+        console.error("Image upload error:", uploadErr);
+        return res.status(500).json({
+          success: false,
+          message: uploadErr.message || "Image upload failed",
+        });
+      }
+    }
+
+    // Calculate read time
+    const wordCount = content.split(/\s+/).length;
+    const readTime = Math.ceil(wordCount / 200);
+
+    // Parse hashtags
+    let parsedHashtags = [];
+    const rawHashtags = hashtags || req.body["hashtags[]"];
+
+    if (rawHashtags) {
+      try {
+        if (Array.isArray(rawHashtags)) {
+          parsedHashtags = rawHashtags;
+        } else if (typeof rawHashtags === "string") {
+          try {
+            parsedHashtags = JSON.parse(rawHashtags);
+          } catch (parseError) {
+            parsedHashtags = [rawHashtags];
+          }
+        }
+
+        parsedHashtags = parsedHashtags
+          .filter((tag) => typeof tag === "string" && tag.trim())
+          .map((tag) => tag.trim().replace(/^#/, ""));
+      } catch (e) {
+        parsedHashtags = [];
+      }
+    }
+
+    // If this project is marked special, make it the featured project
+    const isFeatured =
+      featuredFlag === "true" ||
+      featuredFlag === true ||
+      isSpecial === "true" ||
+      isSpecial === true;
+    if (isFeatured) {
+      await Project.updateMany({}, { isFeatured: false });
+    }
+
+    // Create new project
+    const newProject = await Project.create({
+      title,
+      content,
+      excerpt: excerpt || "",
+      category,
+      hashtags: parsedHashtags,
+      image: imageUrl,
+      cover: coverUrl,
+      author: req.user.id,
+      isSpecial: isFeatured,
+      isFeatured,
+      readTime: `${readTime} min read`,
+    });
+
+    res.status(201).json({
+      success: true,
+      data: newProject,
+      message: "Project created successfully",
+    });
+  } catch (error) {
+    console.error("Create Post Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
