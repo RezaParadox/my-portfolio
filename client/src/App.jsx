@@ -3,17 +3,16 @@ import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import Projects from "./pages/Projects";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import VerifyOTP from "./pages/VerifyOTP";
 import Dashboard from "./pages/Dashboard";
 import ManageProjects from "./pages/ManageProjects";
 import ProjectDetail from "./pages/ProjectDetail";
-import ManageAbout from "./pages/ManageAbout";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -23,6 +22,9 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <Router>
+          {/* for when redirecting to a new page, the scroll position will be reset to the top of the page */}
+          <ScrollToTop />
+
           <div className='flex flex-col min-h-screen'>
             <Navbar />
             <main className='grow'>
@@ -33,7 +35,6 @@ function App() {
                 <Route path='/projects/:id' element={<ProjectDetail />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
-                <Route path='/verify-otp' element={<VerifyOTP />} />
                 <Route
                   path='/admin'
                   element={
@@ -50,14 +51,7 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-                <Route
-                  path='/admin/about'
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <ManageAbout />
-                    </ProtectedRoute>
-                  }
-                />
+
                 <Route
                   path='/admin/messages'
                   element={

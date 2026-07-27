@@ -74,7 +74,7 @@ const Contact = () => {
           className='text-center mb-16'
         >
           <h1 className='text-4xl font-bold mb-4' style={{ color: "var(--section-heading)" }}>Get In Touch</h1>
-          <div className='w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6' />
+          <div className='w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6' />
           <p style={{ color: "var(--section-text-muted)" }}>
             Have a question or want to work together? Send me a message!
           </p>
@@ -85,7 +85,7 @@ const Contact = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className='relative rounded-2xl p-[1px] bg-gradient-to-br from-purple-500 via-violet-500 to-fuchsia-500'
+          className='relative rounded-2xl p-px bg-linear-to-br from-purple-500 via-violet-500 to-fuchsia-500'
           style={{ boxShadow: '0 0 30px rgba(139, 92, 246, 0.2), 0 10px 40px rgba(139, 92, 246, 0.1)' }}
         >
           <div className='rounded-2xl p-8 transition-colors duration-300' style={{ background: "var(--card)" }}>

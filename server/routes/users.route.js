@@ -8,9 +8,6 @@ import {
   updateProfile,
   getUsers,
   deleteUser,
-  // About
-  getAbout,
-  updateAbout,
   // Messages
   sendMessage,
   getMessages,
@@ -30,10 +27,6 @@ router.get("/me", protect, getMe);
 router.put("/me", protect, updateProfile);
 router.get("/", protect, adminOnly, getUsers);
 router.delete("/:id", protect, adminOnly, deleteUser);
-
-// ===================== ABOUT =====================
-router.get("/about", getAbout);
-router.put("/about", protect, adminOnly, updateAbout);
 
 // ===================== MESSAGES =====================
 router.post("/contact", sendMessage);

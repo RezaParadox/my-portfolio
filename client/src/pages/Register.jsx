@@ -41,6 +41,7 @@ const Register = () => {
     e.preventDefault();
     setError("");
 
+    // 1. Validate with Zod
     const result = registerSchema.safeParse(formData);
     if (!result.success) {
       const fieldErrors = {};
@@ -53,20 +54,27 @@ const Register = () => {
 
     setLoading(true);
     try {
-      await axios.post("/api/users/register", { email: formData.email });
-      navigate("/login", {
-        state: {
-          email: formData.email,
-          fullName: formData.fullName,
-          password: formData.password,
-        },
+      const response = await axios.post("/api/users/register", {
+        username: formData.fullName,
+        email: formData.email,
+        password: formData.password,
       });
+
+      if (response.status === 201) {
+        // Clear any errors
+        setError("");
+        navigate("/login");
+      }
     } catch (err) {
       setError(
-        err.response?.data?.message || "Failed to send verification code",
+        err.response?.data?.message ||
+          "Something went wrong during registration",
       );
+
+      console.error("REGISTER_ERROR:", err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

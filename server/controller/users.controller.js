@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-import About from "../models/About.js";
 import Message from "../models/Message.js";
 
 // ===================== AUTH =====================
@@ -9,6 +8,11 @@ import Message from "../models/Message.js";
 export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+
+    // ADD THIS CHECK: Prevents bcrypt from crashing if fields are missing
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
@@ -40,6 +44,8 @@ export const register = async (req, res) => {
       },
     });
   } catch (err) {
+    console.error(err);
+
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -130,42 +136,6 @@ export const deleteUser = async (req, res) => {
     res.json({ message: "User deleted" });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
-  }
-};
-
-// ===================== ABOUT =====================
-
-export const getAbout = async (req, res) => {
-  try {
-    let about = await About.findOne();
-    if (!about) {
-      about = await About.create({
-        name: "Your Name",
-        tagline: "Full Stack Developer",
-        bio: "Passionate about creating beautiful web experiences.",
-        skills: [],
-        experience: [],
-        socialLinks: {},
-      });
-    }
-    res.json(about);
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-export const updateAbout = async (req, res) => {
-  try {
-    let about = await About.findOne();
-    if (!about) {
-      about = await About.create(req.body);
-    } else {
-      Object.assign(about, req.body);
-      await about.save();
-    }
-    res.json(about);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
   }
 };
 

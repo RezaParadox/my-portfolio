@@ -70,7 +70,7 @@ const Footer = () => {
                       {link.hash ? (
                         <Link
                           to={link.to}
-                          className='text-sm hover:text-[var(--primary)] transition-colors'
+                          className='text-sm hover:text-primary transition-colors'
                           style={{ color: 'var(--footer-text)' }}
                         >
                           {link.label}
@@ -78,7 +78,7 @@ const Footer = () => {
                       ) : (
                         <Link
                           to={link.to}
-                          className='text-sm hover:text-[var(--primary)] transition-colors'
+                          className='text-sm hover:text-primary transition-colors'
                           style={{ color: 'var(--footer-text)' }}
                         >
                           {link.label}

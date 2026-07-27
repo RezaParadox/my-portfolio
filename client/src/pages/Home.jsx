@@ -618,115 +618,88 @@ const Home = () => {
       </section>
 
       {/* Projects Section ---------------------------------------------- */}
-      {/* Featured Projects Preview Section */}
-      <section
-        id='projects'
-        className='relative z-10 py-20 px-4 sm:px-6 lg:px-8'
-      >
-        <div className='max-w-6xl mx-auto'>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className='text-center mb-12'
+      {/* Change the mapping part to this: */}
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 relative z-20'>
+        {featuredProjects.map((project, index) => (
+          <Link
+            to={`/projects/${project._id}`}
+            key={project._id}
+            className='group block no-underline' // group allows us to animate children on hover
           >
-            <h2
-              className='text-3xl sm:text-4xl font-bold mb-4 uppercase'
-              style={{ color: "var(--section-heading)" }}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              className='h-full rounded-2xl overflow-hidden transition-all duration-300 transform group-hover:-translate-y-2'
+              style={{
+                background: "var(--card)",
+                border: "1px solid var(--border)",
+                boxShadow: "0 10px 30px -15px rgba(0,0,0,0.3)",
+              }}
             >
-              Projects I&apos;ve Created
-            </h2>
-            <p
-              className='max-w-2xl mx-auto text-sm sm:text-base'
-              style={{ color: "var(--section-text-muted)" }}
-            >
-              A selection of my recent work. Click through to see the full
-              collection.
-            </p>
-          </motion.div>
-
-          {featuredProjects.length === 0 ? (
-            <div
-              className='text-center py-12 rounded-2xl'
-              style={{ background: "var(--card)" }}
-            >
-              <p style={{ color: "var(--muted-foreground)" }}>
-                Projects are loading or not available yet.
-              </p>
-            </div>
-          ) : (
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-              {featuredProjects.map((project, index) => (
-                <motion.div
-                  key={project._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className='rounded-2xl shadow-lg overflow-hidden'
-                  style={{ background: "var(--card)" }}
-                >
-                  {project.image && (
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className='w-full h-44 object-cover'
-                    />
-                  )}
-                  <div className='p-5'>
-                    <h3
-                      className='text-xl font-semibold mb-2'
-                      style={{ color: "var(--foreground)" }}
-                    >
-                      {project.title}
-                    </h3>
-                    <p
-                      className='text-sm mb-4 line-clamp-3'
-                      style={{ color: "var(--muted-foreground)" }}
-                    >
-                      {project.description}
-                    </p>
-                    <div className='flex flex-wrap gap-2'>
-                      {(Array.isArray(project.techTags)
-                        ? project.techTags
-                        : typeof project.techTags === "string"
-                          ? project.techTags
-                              .split(",")
-                              .map((t) => t.trim())
-                              .filter(Boolean)
-                          : []
-                      )
-                        .slice(0, 3)
-                        .map((tag, tagIndex) => (
-                          <span
-                            key={tagIndex}
-                            className='px-3 py-1 rounded-full text-xs font-medium'
-                            style={{
-                              background: "rgba(168, 85, 247, 0.12)",
-                              color: "var(--foreground)",
-                            }}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                    </div>
+              {/* Image Container */}
+              <div className='relative h-48 overflow-hidden'>
+                {project.image ? (
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-110'
+                  />
+                ) : (
+                  <div className='w-full h-full bg-gray-800 flex items-center justify-center'>
+                    <span className='text-gray-500'>No Image</span>
                   </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
+                )}
+                {/* Overlay gradient on hover */}
+                <div className='absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+              </div>
 
-          <div className='mt-10 text-center'>
-            <button
-              onClick={handleSeeAllProjects}
-              className='inline-flex items-center justify-center gap-2 px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-full transition-colors'
-            >
-              See All Projects
-            </button>
-          </div>
-        </div>
-      </section>
+              {/* Content */}
+              <div className='p-6'>
+                <h3
+                  className='text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors'
+                  style={{ color: "var(--foreground)" }}
+                >
+                  {project.title}
+                </h3>
+                <p
+                  className='text-sm mb-4 line-clamp-2 leading-relaxed'
+                  style={{ color: "var(--muted-foreground)" }}
+                >
+                  {project.description}
+                </p>
+
+                <div className='flex flex-wrap gap-2 mt-auto'>
+                  {(Array.isArray(project.techTags)
+                    ? project.techTags
+                    : typeof project.techTags === "string"
+                      ? project.techTags
+                          .split(",")
+                          .map((t) => t.trim())
+                          .filter(Boolean)
+                      : []
+                  )
+                    .slice(0, 3)
+                    .map((tag, tagIndex) => (
+                      <span
+                        key={tagIndex}
+                        className='px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider'
+                        style={{
+                          background: "rgba(168, 85, 247, 0.1)",
+                          color: "var(--purple-400)",
+                          border: "1px solid rgba(168, 85, 247, 0.2)",
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                </div>
+              </div>
+            </motion.div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };
