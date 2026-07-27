@@ -17,6 +17,8 @@ import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+
+
 function App() {
   return (
     <ThemeProvider>
@@ -70,6 +72,8 @@ function App() {
                 />
               </Routes>
             </main>
+
+ 
 
             <Footer />
           </div>
