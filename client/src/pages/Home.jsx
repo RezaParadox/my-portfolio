@@ -271,7 +271,11 @@ const ServiceCard = ({ title, desc, delay = 0 }) => {
   );
 };
 
+import { useTranslation } from "react-i18next";
+
 const Home = () => {
+  const { t } = useTranslation();
+
   const [about, setAbout] = useState(null);
   const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
@@ -326,7 +330,7 @@ const Home = () => {
               className='text-4xl sm:text-6xl font-bold mb-6 lg:mt-20 uppercase'
               style={{ color: "var(--section-heading)" }}
             >
-              <TypingText text='Welcome to my website' />
+              <TypingText text={t("home.welcome")} />
             </h1>
           </motion.div>
 
@@ -339,7 +343,7 @@ const Home = () => {
               className='text-xl sm:text-2xl mb-4 uppercase shimmer-text font-bold'
               style={{ color: "var(--section-text)" }}
             >
-              Here we are going to turn beautiful dreams into reality together
+              {t("home.intro")}
             </p>
           </motion.div>
 
@@ -352,9 +356,7 @@ const Home = () => {
               className='text-lg mb-8 max-w-2xl mx-auto shimmer-text uppercase font-bold'
               style={{ color: "var(--section-text-muted)" }}
             >
-              If you are looking for someone who can create a fast and powerful
-              modern site that uses modern tools and technologies. You have come
-              to the right place
+              {t("home.intro2")}
             </p>
           </motion.div>
 
@@ -371,7 +373,7 @@ const Home = () => {
               onClick={() => scrollTo("#projects")}
               className='inline-flex items-center justify-center gap-2 px-8 py-4 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg transition-colors duration-150 lg:mt-20'
             >
-              Explore
+              {t("home.btnexplore")}
               <FiArrowRight />
             </motion.button>
 
@@ -395,7 +397,7 @@ const Home = () => {
                 e.currentTarget.style.color = "var(--section-text)";
               }}
             >
-              Discover More
+              {t("home.btndescover")}
             </motion.button>
           </motion.div>
         </div>
@@ -415,19 +417,19 @@ const Home = () => {
               className='text-3xl sm:text-4xl font-bold mb-4 uppercase'
               style={{ color: "var(--section-heading)" }}
             >
-              What I Do
+              {t("home.title-1")}
             </h2>
           </motion.div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
             {[
               {
-                title: "Frontend Development",
-                desc: "Building responsive, performant user interfaces with React, Next.js, and modern CSS frameworks. I focus on creating seamless user experiences with clean, maintainable code.",
+                title: t("home.subTitle-1"),
+                desc: t("home.description-1"),
               },
               {
-                title: "Backend Development",
-                desc: "Designing scalable server architectures with Node.js and MongoDB. I build robust APIs and databases that power modern web applications.",
+                title: t("home.subTitle-2"),
+                desc: t("home.description-2"),
               },
             ].map((item, i) => (
               <ServiceCard
@@ -484,23 +486,22 @@ const Home = () => {
               className='text-3xl sm:text-4xl font-bold uppercase mb-6'
               style={{ color: "var(--section-heading)" }}
             >
-              About Me
+              {t("home.title-2")}
             </h2>
             <div className='space-y-4 mb-8'>
               <p
                 className='leading-relaxed font-bold'
                 style={{ color: "var(--section-text)" }}
               >
-                {about?.bio ||
-                  "I'm a passionate full-stack developer with a love for creating elegant, efficient, and user-friendly web applications. With expertise in modern technologies like React, Node.js, and cloud services, I transform complex problems into simple, beautiful, and intuitive solutions."}
+                {t("home.description-3")}
               </p>
-              <p
+              {/* <p
                 className='leading-relaxed font-bold'
                 style={{ color: "var(--section-text-muted)" }}
               >
                 {about?.tagline ||
                   "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community."}
-              </p>
+              </p> */}
             </div>
 
             {/* Stats */}
@@ -511,7 +512,7 @@ const Home = () => {
                   className='text-sm'
                   style={{ color: "var(--section-text-muted)" }}
                 >
-                  Years Experience
+                  {t("home.experience")}
                 </p>
               </div>
               <div
@@ -524,7 +525,7 @@ const Home = () => {
                   className='text-sm'
                   style={{ color: "var(--section-text-muted)" }}
                 >
-                  Projects Completed
+                  {t("home.projects")}
                 </p>
               </div>
               <div
@@ -537,7 +538,7 @@ const Home = () => {
                   className='text-sm'
                   style={{ color: "var(--section-text-muted)" }}
                 >
-                  Client Satisfaction
+                  {t("home.satisfaction")}
                 </p>
               </div>
             </div>
@@ -605,7 +606,7 @@ const Home = () => {
               className='text-3xl sm:text-4xl font-bold mb-4 uppercase'
               style={{ color: "var(--section-heading)" }}
             >
-              My skills
+              {t("home.title-3")}
             </h2>
           </motion.div>
 
@@ -618,13 +619,26 @@ const Home = () => {
       </section>
 
       {/* Projects Section ---------------------------------------------- */}
-      {/* Change the mapping part to this: */}
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 relative z-20'>
+
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:px-6 lg:px-14 py-20 mx-5'>
+        <div className='col-span-full text-center mb-8'>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className='text-3xl sm:text-4xl font-bold mb-4 uppercase'
+            style={{ color: "var(--section-heading)" }}
+          >
+            {t("home.title-4")}
+          </motion.h2>
+        </div>
+
         {featuredProjects.map((project, index) => (
           <Link
             to={`/projects/${project._id}`}
             key={project._id}
-            className='group block no-underline' // group allows us to animate children on hover
+            className='group block no-underline ' // group allows us to animate children on hover
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -639,7 +653,7 @@ const Home = () => {
               }}
             >
               {/* Image Container */}
-              <div className='relative h-48 overflow-hidden'>
+              <div className='relative h-48 overflow-hidden '>
                 {project.image ? (
                   <img
                     src={project.image}

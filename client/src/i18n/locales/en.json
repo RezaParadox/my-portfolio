@@ -11,18 +11,31 @@
     "profile": "Profile"
   },
   "home": {
-    "welcome": "Welcome to My Portfolio",
-    "intro": "I'm a passionate developer creating amazing web experiences",
+    "welcome": "Welcome to my website",
+    "intro": "Here we are going to turn beautiful dreams into reality together",
+    "intro2": "If you are looking for someone who can create a fast and powerful modern site that uses modern tools and technologies. You have come to the right place",
     "viewProjects": "View My Projects",
-    "getInTouch": "Get In Touch"
+    "getInTouch": "Get In Touch",
+    "btnexplore": "Explore Projects",
+    "btndescover": "Discover More",
+    "title-1": "What I Do",
+    "subTitle-1": "Frontend Development",
+    "description-1": "Building responsive, performant user interfaces with React, Next.js, and modern CSS frameworks. I focus on creating seamless user experiences with clean, maintainable code.",
+    "subTitle-2": "Backend Development",
+    "description-2": "Designing scalable server architectures with Node.js and MongoDB. I build robust APIs and databases that power modern web applications.",
+
+    "title-2": "About Me",
+    "description-3": "I am a passionate developer with experience in both frontend and backend technologies. I enjoy creating innovative solutions and bringing ideas to life.",
+    "experience": "Years of Experience",
+    "projects": "Projects Completed",
+    "satisfaction": "Client Satisfaction",
+    "title-3": "My Skills",
+    "title-4": "Projects that I created"
   },
   "projects": {
-    "title": "My Projects",
-    "description": "Explore my latest work and projects",
-    "noProjects": "No projects available yet",
-    "liveUrl": "Live",
-    "githubUrl": "GitHub",
-    "viewDetails": "View Details"
+    "title": "back to home",
+    "demo": "live demo",
+    "about project": "About Project"
   },
   "contact": {
     "title": "Get In Touch",
@@ -34,42 +47,15 @@
     "send": "Send Message",
     "sending": "Sending...",
     "success": "Message sent successfully!",
-    "error": "Failed to send message. Please try again."
+    "error": "Failed to send message. Please try again.",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "your.email@example.com",
+    "messagePlaceholder": "Your message..."
   },
-  "dashboard": {
-    "title": "Admin Dashboard",
-    "projects": "Projects",
-    "messages": "Messages",
-    "profile": "Profile",
-    "welcome": "Welcome back!"
-  },
-  "manageProjects": {
-    "title": "Projects",
-    "description": "Manage your portfolio projects",
-    "addProject": "Add Project",
-    "editProject": "Edit Project",
-    "deleteProject": "Delete Project",
-    "noProjects": "No projects yet. Click \"Add Project\" to get started!",
-    "titleLabel": "Title",
-    "descriptionLabel": "Description",
-    "coverImage": "Cover Image",
-    "galleryImages": "Gallery Images",
-    "techTags": "Tech Tags",
-    "liveUrl": "Live URL",
-    "githubUrl": "GitHub URL",
-    "featured": "Featured project",
-    "cancel": "Cancel",
-    "create": "Create",
-    "update": "Update",
-    "delete": "Delete",
-    "edit": "Edit",
-    "uploading": "Uploading...",
-    "clickToUpload": "Click to upload",
-    "deleteConfirm": "Are you sure you want to delete this project? This action cannot be undone.",
-    "deleteConfirmTitle": "Delete Project"
-  },
+
   "login": {
     "title": "Login",
+    "description": "enter your account",
     "email": "Email",
     "password": "Password",
     "login": "Login",
@@ -79,7 +65,9 @@
   },
   "register": {
     "title": "Register",
+    "description": "Create a new account",
     "name": "Full Name",
+    "placeholder": "reza hosseini",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
@@ -99,7 +87,17 @@
     "saving": "Saving..."
   },
   "footer": {
-    "allRights": "All rights reserved",
-    "followMe": "Follow me on social media"
+    "title": "Portfolio",
+    "description": "Building modern web applications with cutting-edge technologies. Let's create something amazing together.",
+    "navigation": "Navigation",
+    "submenu-1": "About me",
+    "submenu-2": "Projects",
+    "submenu-3": "Contact",
+    "skill": "Skills",
+    "submenu-4": "frontend",
+    "submenu-5": "backend",
+    "submenu-6": "fullstack",
+
+    "allRights": "All rights reserved by Rh-paradox. Designed and developed by Rh-paradox."
   }
 }

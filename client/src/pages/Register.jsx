@@ -16,7 +16,13 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
 
+
+import { useTranslation } from "react-i18next";
+
 const Register = () => {
+  const { t } = useTranslation();
+
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -111,13 +117,13 @@ const Register = () => {
                 className='text-3xl font-bold mb-2'
                 style={{ color: "var(--foreground)" }}
               >
-                Create Account
+                {t("register.title")}
               </h1>
               <p
                 className='text-sm'
                 style={{ color: "var(--muted-foreground)" }}
               >
-                Register a new account
+                {t("register.description")}
               </p>
             </div>
 
@@ -138,7 +144,7 @@ const Register = () => {
                   htmlFor='fullName'
                   style={{ color: "var(--muted-foreground)" }}
                 >
-                  Full Name
+                 {t("register.name")}
                 </Label>
                 <div className='relative'>
                   <FiUser
@@ -152,7 +158,7 @@ const Register = () => {
                     name='fullName'
                     value={formData.fullName}
                     onChange={handleChange}
-                    placeholder='max verstapen'
+                    placeholder={t("register.namePlaceholder")}
                     className={`pl-10 h-11 transition-colors duration-300 ${
                       errors.fullName
                         ? "border-red-500/50 focus-visible:ring-red-500/30"
@@ -175,7 +181,7 @@ const Register = () => {
                   htmlFor='email'
                   style={{ color: "var(--muted-foreground)" }}
                 >
-                  Email
+                  {t("register.email")}
                 </Label>
                 <div className='relative'>
                   <FiMail
@@ -189,7 +195,7 @@ const Register = () => {
                     name='email'
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder='admin@example.com'
+                    placeholder='user@example.com'
                     className={`pl-10 h-11 transition-colors duration-300 ${
                       errors.email
                         ? "border-red-500/50 focus-visible:ring-red-500/30"
@@ -212,7 +218,7 @@ const Register = () => {
                   htmlFor='password'
                   style={{ color: "var(--muted-foreground)" }}
                 >
-                  Password
+                  {t("register.password")}
                 </Label>
                 <div className='relative'>
                   <FiLock
@@ -262,7 +268,7 @@ const Register = () => {
                   htmlFor='confirmPassword'
                   style={{ color: "var(--muted-foreground)" }}
                 >
-                  Confirm Password
+                  {t("register.confirmPassword")}
                 </Label>
                 <div className='relative'>
                   <FiLock
@@ -317,7 +323,7 @@ const Register = () => {
                 {loading ? (
                   <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white' />
                 ) : (
-                  "Create Account"
+                  t("register.title")
                 )}
               </Button>
             </form>
@@ -327,12 +333,12 @@ const Register = () => {
                 className='text-sm'
                 style={{ color: "var(--muted-foreground)" }}
               >
-                Already have an account?{" "}
+                {t("register.haveAccount")}{" "}
                 <Link
                   to='/login'
                   className='text-purple-400 hover:text-purple-300 font-medium'
                 >
-                  Sign in
+                  {t("register.login")}
                 </Link>
               </p>
             </div>

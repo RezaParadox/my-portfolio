@@ -8,7 +8,11 @@ import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
 
+import { useTranslation } from "react-i18next";
+
 const Contact = () => {
+  const { t, i18n } = useTranslation();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -42,13 +46,13 @@ const Contact = () => {
     setLoading(true);
     try {
       await api.post("/users/contact", formData);
-      setStatus({ type: "success", message: "Message sent successfully!" });
+      setStatus({ type: "success", message: t("contact.success") });
       setFormData({ name: "", email: "", message: "" });
       setErrors({});
     } catch (err) {
       setStatus({
         type: "error",
-        message: err.response?.data?.message || "Failed to send message",
+        message: err.response?.data?.message || t("contact.error"),
       });
     } finally {
       setLoading(false);
@@ -73,10 +77,15 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className='text-center mb-16'
         >
-          <h1 className='text-4xl font-bold mb-4' style={{ color: "var(--section-heading)" }}>Get In Touch</h1>
+          <h1
+            className='text-4xl font-bold mb-4'
+            style={{ color: "var(--section-heading)" }}
+          >
+            {t("contact.title")}
+          </h1>
           <div className='w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6' />
           <p style={{ color: "var(--section-text-muted)" }}>
-            Have a question or want to work together? Send me a message!
+            {t("contact.description")}
           </p>
         </motion.div>
 
@@ -86,9 +95,15 @@ const Contact = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className='relative rounded-2xl p-px bg-linear-to-br from-purple-500 via-violet-500 to-fuchsia-500'
-          style={{ boxShadow: '0 0 30px rgba(139, 92, 246, 0.2), 0 10px 40px rgba(139, 92, 246, 0.1)' }}
+          style={{
+            boxShadow:
+              "0 0 30px rgba(139, 92, 246, 0.2), 0 10px 40px rgba(139, 92, 246, 0.1)",
+          }}
         >
-          <div className='rounded-2xl p-8 transition-colors duration-300' style={{ background: "var(--card)" }}>
+          <div
+            className='rounded-2xl p-8 transition-colors duration-300'
+            style={{ background: "var(--card)" }}
+          >
             {status.message && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
@@ -110,8 +125,11 @@ const Contact = () => {
 
             <form onSubmit={handleSubmit} className='space-y-5'>
               <div className='space-y-2'>
-                <Label htmlFor='name' style={{ color: "var(--muted-foreground)" }}>
-                  Name
+                <Label
+                  htmlFor='name'
+                  style={{ color: "var(--muted-foreground)" }}
+                >
+                  {t("contact.name")}
                 </Label>
                 <Input
                   type='text'
@@ -119,7 +137,7 @@ const Contact = () => {
                   name='name'
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder='Your name'
+                  placeholder={t("contact.namePlaceholder")}
                   className={`h-11 transition-colors duration-300 ${
                     errors.name
                       ? "border-red-500/50 focus-visible:ring-red-500/30"
@@ -132,15 +150,16 @@ const Contact = () => {
                   }}
                 />
                 {errors.name && (
-                  <p className='text-red-400 text-xs mt-1'>
-                    {errors.name}
-                  </p>
+                  <p className='text-red-400 text-xs mt-1'>{errors.name}</p>
                 )}
               </div>
 
               <div className='space-y-2'>
-                <Label htmlFor='email' style={{ color: "var(--muted-foreground)" }}>
-                  Email
+                <Label
+                  htmlFor='email'
+                  style={{ color: "var(--muted-foreground)" }}
+                >
+                  {t("contact.email")}
                 </Label>
                 <Input
                   type='email'
@@ -148,7 +167,7 @@ const Contact = () => {
                   name='email'
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder='your.email@example.com'
+                  placeholder={t("contact.emailPlaceholder")}
                   className={`h-11 transition-colors duration-300 ${
                     errors.email
                       ? "border-red-500/50 focus-visible:ring-red-500/30"
@@ -161,15 +180,16 @@ const Contact = () => {
                   }}
                 />
                 {errors.email && (
-                  <p className='text-red-400 text-xs mt-1'>
-                    {errors.email}
-                  </p>
+                  <p className='text-red-400 text-xs mt-1'>{errors.email}</p>
                 )}
               </div>
 
               <div className='space-y-2'>
-                <Label htmlFor='message' style={{ color: "var(--muted-foreground)" }}>
-                  Message
+                <Label
+                  htmlFor='message'
+                  style={{ color: "var(--muted-foreground)" }}
+                >
+                  {t("contact.message")}
                 </Label>
                 <Textarea
                   id='message'
@@ -177,7 +197,7 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   rows={5}
-                  placeholder='Your message...'
+                  placeholder={t("contact.messagePlaceholder")}
                   className={`transition-colors duration-300 resize-none ${
                     errors.message
                       ? "border-red-500/50 focus-visible:ring-red-500/30"
@@ -190,9 +210,7 @@ const Contact = () => {
                   }}
                 />
                 {errors.message && (
-                  <p className='text-red-400 text-xs mt-1'>
-                    {errors.message}
-                  </p>
+                  <p className='text-red-400 text-xs mt-1'>{errors.message}</p>
                 )}
               </div>
 
@@ -205,7 +223,7 @@ const Contact = () => {
                   <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white' />
                 ) : (
                   <>
-                    Send Message
+                    {t("contact.send")}
                     <FiSend size={16} />
                   </>
                 )}

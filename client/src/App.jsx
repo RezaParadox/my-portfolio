@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
@@ -17,9 +19,14 @@ import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-
-
 function App() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    // Set RTL/LTR based on language
+    document.documentElement.dir = i18n.language === "fa" ? "rtl" : "ltr";
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
   return (
     <ThemeProvider>
       <AuthProvider>
@@ -72,8 +79,6 @@ function App() {
                 />
               </Routes>
             </main>
-
- 
 
             <Footer />
           </div>

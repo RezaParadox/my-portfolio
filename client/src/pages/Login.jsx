@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FiLock, FiMail, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
-import { useAuth } from '../context/AuthContext';
-import { loginSchema } from '../schemas/auth';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Button } from '../components/ui/button';
-
-
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FiLock, FiMail, FiAlertCircle, FiEye, FiEyeOff } from "react-icons/fi";
+import { useAuth } from "../context/AuthContext";
+import { loginSchema } from "../schemas/auth";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Button } from "../components/ui/button";
+import { useTranslation } from "react-i18next";
 const Login = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const { t } = useTranslation();
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { login, user } = useAuth();
@@ -21,13 +21,13 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: '' });
+      setErrors({ ...errors, [e.target.name]: "" });
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     const result = loginSchema.safeParse(formData);
     if (!result.success) {
@@ -42,7 +42,7 @@ const Login = () => {
     setLoading(true);
     const loginResult = await login(formData.email, formData.password);
     if (loginResult.success) {
-      navigate('/');
+      navigate("/");
     } else {
       setError(loginResult.message);
     }
@@ -69,13 +69,27 @@ const Login = () => {
         {/* Card with purple gradient border + shadow */}
         <div
           className='relative rounded-2xl p-px bg-linear-to-br from-purple-500 via-violet-500 to-fuchsia-500'
-          style={{ boxShadow: '0 0 30px rgba(139, 92, 246, 0.2), 0 10px 40px rgba(139, 92, 246, 0.1)' }}
+          style={{
+            boxShadow:
+              "0 0 30px rgba(139, 92, 246, 0.2), 0 10px 40px rgba(139, 92, 246, 0.1)",
+          }}
         >
-          <div className='rounded-2xl p-8 transition-colors duration-300' style={{ background: "var(--card)" }}>
+          <div
+            className='rounded-2xl p-8 transition-colors duration-300'
+            style={{ background: "var(--card)" }}
+          >
             <div className='text-center mb-8'>
-              <h1 className='text-3xl font-bold mb-2' style={{ color: "var(--foreground)" }}>Admin Login</h1>
-              <p className='text-sm' style={{ color: "var(--muted-foreground)" }}>
-                Sign in to manage your portfolio
+              <h1
+                className='text-3xl font-bold mb-2'
+                style={{ color: "var(--foreground)" }}
+              >
+                {t("login.title")}
+              </h1>
+              <p
+                className='text-sm'
+                style={{ color: "var(--muted-foreground)" }}
+              >
+                {t("login.description")}
               </p>
             </div>
 
@@ -91,12 +105,12 @@ const Login = () => {
             )}
 
             <form onSubmit={handleSubmit} className='space-y-5'>
-        <div className='space-y-2'>
+              <div className='space-y-2'>
                 <Label
                   htmlFor='email'
                   style={{ color: "var(--muted-foreground)" }}
                 >
-                  Email
+                  {t("login.email")}
                 </Label>
                 <div className='relative'>
                   <FiMail
@@ -110,7 +124,7 @@ const Login = () => {
                     name='email'
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder='admin@example.com'
+                    placeholder='example@example.com'
                     className={`pl-10 h-11 transition-colors duration-300 ${
                       errors.email
                         ? "border-red-500/50 focus-visible:ring-red-500/30"
@@ -129,8 +143,11 @@ const Login = () => {
               </div>
 
               <div className='space-y-2'>
-                <Label htmlFor='password' style={{ color: "var(--muted-foreground)" }}>
-                  Password
+                <Label
+                  htmlFor='password'
+                  style={{ color: "var(--muted-foreground)" }}
+                >
+                  {t("login.password")}
                 </Label>
                 <div className='relative'>
                   <FiLock
@@ -139,7 +156,7 @@ const Login = () => {
                     style={{ color: "var(--muted-foreground)" }}
                   />
                   <Input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     id='password'
                     name='password'
                     value={formData.password}
@@ -163,13 +180,15 @@ const Login = () => {
                     style={{ color: "var(--muted-foreground)" }}
                     tabIndex={-1}
                   >
-                    {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                    {showPassword ? (
+                      <FiEyeOff size={18} />
+                    ) : (
+                      <FiEye size={18} />
+                    )}
                   </button>
                 </div>
                 {errors.password && (
-                  <p className='text-red-400 text-xs mt-1'>
-                    {errors.password}
-                  </p>
+                  <p className='text-red-400 text-xs mt-1'>{errors.password}</p>
                 )}
               </div>
 
@@ -181,16 +200,22 @@ const Login = () => {
                 {loading ? (
                   <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white' />
                 ) : (
-                  "Sign In"
+                  t("login.login")
                 )}
               </Button>
             </form>
 
             <div className='mt-6 text-center'>
-              <p className='text-sm' style={{ color: "var(--muted-foreground)" }}>
-                Don't have an account?{' '}
-                <Link to='/register' className='text-purple-400 hover:text-purple-300 font-medium'>
-                  Create one
+              <p
+                className='text-sm'
+                style={{ color: "var(--muted-foreground)" }}
+              >
+               {t("login.noAccount")}
+                <Link
+                  to='/register'
+                  className='text-purple-400 hover:text-purple-300 font-medium'
+                >
+                  {t("login.register")}
                 </Link>
               </p>
             </div>

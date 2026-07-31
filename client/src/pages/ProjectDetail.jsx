@@ -5,7 +5,12 @@ import { FiArrowLeft, FiExternalLink, FiGithub } from "react-icons/fi";
 import api from "../utils/api";
 import ThumbnailScroll from "../components/ThumbnailScroll";
 
+ import { useTranslation } from "react-i18next";
+
 const ProjectDetail = () => {
+
+   const { t } = useTranslation();
+
   const { id } = useParams();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -72,7 +77,7 @@ const ProjectDetail = () => {
             className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-purple-500 dark:hover:text-purple-400 transition-colors mb-8"
           >
             <FiArrowLeft size={16} />
-            Back to Projects
+            {t("projects.title")}
           </Link>
         </motion.div>
 
@@ -127,7 +132,7 @@ const ProjectDetail = () => {
                 className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-xl transition-colors"
               >
                 <FiExternalLink size={16} />
-                Live Demo
+                {t("projects.demo")}
               </a>
             )}
             {project.githubUrl && (
@@ -166,7 +171,7 @@ const ProjectDetail = () => {
         >
           <div className="rounded-2xl p-8 transition-colors duration-300" style={{ background: "var(--card)" }}>
             <h2 className="text-xl font-semibold mb-4" style={{ color: "var(--foreground)" }}>
-              About this project
+              {t("projects.about project")}
             </h2>
             <div className="w-28 h-1 bg-purple-500 rounded-full mb-6" />
             <p className="leading-relaxed whitespace-pre-wrap" style={{ color: "var(--muted-foreground)" }}>

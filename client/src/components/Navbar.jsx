@@ -4,17 +4,25 @@ import { useTheme } from "../context/ThemeContext";
 import { useState } from "react";
 import { FiMenu, FiX, FiSun, FiMoon } from "react-icons/fi";
 
+// LanguageSwitcher
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
+
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
+
+  // Language
+  const { t, i18n } = useTranslation();
+
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { hash: "#about", label: "About" },
-    { hash: "#projects", label: "Projects" },
-    { path: "/contact", label: "Contact" },
+    { hash: "#about", label: t("navbar.home") },
+    { hash: "#projects", label: t("navbar.projects") },
+    { path: "/contact", label: t("navbar.contact") },
   ];
 
   const scrollToSection = (hash) => {
@@ -93,7 +101,7 @@ const Navbar = () => {
                       : "text-(--navbar-text) hover:text-(--navbar-text-hover)"
                   }`}
                 >
-                  Dashboard
+                  {t("navbar.dashboard")}
                 </Link>
               ) : (
                 <Link
@@ -104,14 +112,14 @@ const Navbar = () => {
                       : "text-(--navbar-text) hover:text-(--navbar-text-hover)"
                   }`}
                 >
-                  Profile
+                  {t("navbar.profile")}
                 </Link>
               )}
               <button
                 onClick={logout}
                 className='text-sm font-medium text-(--navbar-text) hover:text-(--navbar-text-hover)'
               >
-                Logout
+                {t("navbar.logout")}
               </button>
             </>
           ) : (
@@ -119,9 +127,12 @@ const Navbar = () => {
               to='/login'
               className='px-5 py-2 text-sm font-medium text-primary border border-(--primary)/30 rounded-full hover:bg-(--primary)/10 transition-all'
             >
-              Sign in
+              {t("navbar.login")}
             </Link>
           )}
+
+          {/* Language Switcher */}
+          <LanguageSwitcher />
 
           {/* Theme Toggle */}
           <button
@@ -140,6 +151,7 @@ const Navbar = () => {
 
         {/* Mobile menu button */}
         <div className='flex items-center gap-2 md:hidden'>
+          <LanguageSwitcher />
           <button
             onClick={toggleTheme}
             className='p-2 rounded-full border transition-all duration-300'
