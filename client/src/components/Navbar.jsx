@@ -11,17 +11,15 @@ import LanguageSwitcher from "./LanguageSwitcher";
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
-
-  // Language
-  const { t, i18n } = useTranslation();
-
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { hash: "#about", label: t("navbar.home") },
-    { hash: "#projects", label: t("navbar.projects") },
+    { path: "/", label: t("navbar.home") },
+    { path: "/about", label: t("home.title-2") },
+    { path: "/projects", label: t("navbar.projects") },
     { path: "/contact", label: t("navbar.contact") },
   ];
 
@@ -52,14 +50,10 @@ const Navbar = () => {
     }`;
 
   return (
-    <div className='fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4'>
-      <nav
-        className='flex items-center gap-6 px-5 py-2 backdrop-blur-xl border rounded-full shadow-2xl'
-        style={{
-          background: "var(--navbar-bg)",
-          borderColor: "var(--navbar-border)",
-        }}
-      >
+    <div className='fixed top-0 left-0 right-0 z-50 flex flex-col items-center pt-4 px-4'>
+      {/* 1. APPLY glass3d CLASS HERE */}
+
+      <nav className='glass3d flex items-center gap-6 px-6 py-2 rounded-full'>
         {/* Logo */}
         <Link to='/' className='flex items-center gap-2 -my-3'>
           <img
@@ -90,31 +84,17 @@ const Navbar = () => {
               </Link>
             ),
           )}
+
           {user ? (
             <>
-              {user.role === "admin" ? (
-                <Link
-                  to='/admin'
-                  className={`text-sm font-medium transition-colors ${
-                    location.pathname.startsWith("/admin")
-                      ? "text-(--navbar-text-active)"
-                      : "text-(--navbar-text) hover:text-(--navbar-text-hover)"
-                  }`}
-                >
-                  {t("navbar.dashboard")}
-                </Link>
-              ) : (
-                <Link
-                  to='/profile'
-                  className={`text-sm font-medium transition-colors ${
-                    location.pathname === "/profile"
-                      ? "text-(--navbar-text-active)"
-                      : "text-(--navbar-text) hover:text-(--navbar-text-hover)"
-                  }`}
-                >
-                  {t("navbar.profile")}
-                </Link>
-              )}
+              <Link
+                to={user.role === "admin" ? "/admin" : "/profile"}
+                className={navLinkClass({ path: "/" })}
+              >
+                {user.role === "admin"
+                  ? t("navbar.dashboard")
+                  : t("navbar.profile")}
+              </Link>
               <button
                 onClick={logout}
                 className='text-sm font-medium text-(--navbar-text) hover:text-(--navbar-text-hover)'
@@ -125,25 +105,21 @@ const Navbar = () => {
           ) : (
             <Link
               to='/login'
-              className='px-5 py-2 text-sm font-medium text-primary border border-(--primary)/30 rounded-full hover:bg-(--primary)/10 transition-all'
+              className='px-5 py-2 text-sm font-medium text-primary border border-primary/30 rounded-full hover:bg-primary/10 transition-all'
             >
               {t("navbar.login")}
             </Link>
           )}
 
-          {/* Language Switcher */}
           <LanguageSwitcher />
 
-          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             className='p-2 rounded-full border transition-all duration-300 hover:scale-110'
             style={{
-              background: "var(--footer-social-bg)",
               borderColor: "var(--navbar-border)",
               color: "var(--foreground)",
             }}
-            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
             {theme === "dark" ? <FiSun size={16} /> : <FiMoon size={16} />}
           </button>
@@ -154,23 +130,12 @@ const Navbar = () => {
           <LanguageSwitcher />
           <button
             onClick={toggleTheme}
-            className='p-2 rounded-full border transition-all duration-300'
-            style={{
-              background: "var(--footer-social-bg)",
-              borderColor: "var(--navbar-border)",
-              color: "var(--foreground)",
-            }}
-            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            className='p-2 rounded-full border border-(--navbar-border)'
           >
             {theme === "dark" ? <FiSun size={16} /> : <FiMoon size={16} />}
           </button>
           <button
-            className='p-2 rounded-full border backdrop-blur-xl'
-            style={{
-              background: "var(--navbar-bg)",
-              borderColor: "var(--navbar-border)",
-              color: "var(--navbar-text)",
-            }}
+            className='p-2 rounded-full border border-(--navbar-border)'
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
@@ -178,84 +143,34 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Navigation */}
+      {/* 2. APPLY glass3d CLASS TO MOBILE MENU AS WELL */}
       {mobileMenuOpen && (
-        <div
-          className='md:hidden fixed top-20 left-4 right-4 backdrop-blur-xl border rounded-2xl p-4 shadow-2xl'
-          style={{
-            background: "var(--navbar-mobile-bg)",
-            borderColor: "var(--navbar-mobile-border)",
-          }}
-        >
-          {navLinks.map((link) =>
-            link.hash ? (
-              <button
-                key={link.hash}
-                onClick={() => {
-                  scrollToSection(link.hash);
-                  setMobileMenuOpen(false);
-                }}
-                className={`block w-full text-left py-3 text-sm font-medium ${
-                  isActive(link)
-                    ? "text-(--navbar-text-active)"
-                    : "text-(--navbar-text) hover:text-(--navbar-text-hover)"
-                }`}
-              >
-                {link.label}
-              </button>
-            ) : (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`block py-3 text-sm font-medium ${
-                  isActive(link)
-                    ? "text-(--navbar-text-active)"
-                    : "text-(--navbar-text) hover:text-(--navbar-text-hover)"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ),
-          )}
-          {user ? (
-            <>
-              {user.role === "admin" ? (
-                <Link
-                  to='/admin'
-                  onClick={() => setMobileMenuOpen(false)}
-                  className='block py-3 text-sm font-medium text-(--navbar-text) hover:text-(--navbar-text-hover)'
-                >
-                  Dashboard
-                </Link>
-              ) : (
-                <Link
-                  to='/profile'
-                  onClick={() => setMobileMenuOpen(false)}
-                  className='block py-3 text-sm font-medium text-(--navbar-text) hover:text-(--navbar-text-hover)'
-                >
-                  Profile
-                </Link>
-              )}
-              <button
-                onClick={() => {
-                  logout();
-                  setMobileMenuOpen(false);
-                }}
-                className='block py-3 text-sm font-medium text-(--navbar-text) hover:text-(--navbar-text-hover)'
-              >
-                Logout
-              </button>
-            </>
-          ) : (
+        <div className='glass3d md:hidden fixed top-full w-96  rounded-2xl p-4  '>
+          {navLinks.map((link) => (
             <Link
-              to='/login'
+              key={link.path}
+              to={link.path}
               onClick={() => setMobileMenuOpen(false)}
-              className='block py-3 text-sm font-medium text-(--navbar-text) hover:text-(--navbar-text-hover)'
+              className={`block py-3 text-sm font-medium ${isActive(link) ? "text-(--navbar-text-active)" : "text-(--navbar-text)"}`}
             >
-              Sign in
+              {link.label}
             </Link>
-          )}
+          ))}
+
+          <div className='flex flex-col items-center gap-4 mt-4 w-full'>
+            {!user ? (
+              <Link
+                to='/login'
+                className='mt-2 px-8 py-2 glass3d rounded-full text-white'
+              >
+                {t("navbar.login")}
+              </Link>
+            ) : (
+              <button onClick={logout} className='text-red-400'>
+               {t("navbar.logout")}
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>
