@@ -8,6 +8,12 @@ import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
 
+ import CountrySelect from "../components/PhoneInputCustom";
+
+// phone number input
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
+
 import { useTranslation } from "react-i18next";
 
 const Contact = () => {
@@ -16,6 +22,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phoneNumber: "",
     message: "",
   });
   const [errors, setErrors] = useState({});
@@ -26,6 +33,14 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: "" });
+    }
+  };
+
+  // Custom handler for Phone Input
+  const handlePhoneChange = (value) => {
+    setFormData({ ...formData, phoneNumber: value });
+    if (errors.phoneNumber) {
+      setErrors({ ...errors, phoneNumber: "" });
     }
   };
 
@@ -47,7 +62,7 @@ const Contact = () => {
     try {
       await api.post("/users/contact", formData);
       setStatus({ type: "success", message: t("contact.success") });
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", phoneNumber: "", message: "" });
       setErrors({});
     } catch (err) {
       setStatus({
@@ -154,6 +169,35 @@ const Contact = () => {
                 )}
               </div>
 
+              {/* Phone Number Field */}
+              <div className='space-y-2'>
+                <Label
+                  htmlFor='phoneNumber'
+                  style={{ color: "var(--muted-foreground)" }}
+                >
+                  {t("contact.phone-number")}
+                </Label>
+                <div className='phone-input-container'>
+                  <PhoneInput
+                    countrySelectComponent={CountrySelect}
+                    international
+                    defaultCountry='AF'
+                    value={formData.phoneNumber}
+                    onChange={handlePhoneChange}
+                    placeholder={t("contact.phonePlaceholder")}
+                    // We apply the 'phone-input-field' class here
+                    className={`flex h-11 w-full rounded-xl phone-input-field overflow-hidden ${
+                      errors.phoneNumber ? "border-red-500/50" : ""
+                    }`}
+                  />
+                </div>
+                {errors.phoneNumber && (
+                  <p className='text-red-400 text-xs mt-1'>
+                    {errors.phoneNumber}
+                  </p>
+                )}
+              </div>
+
               <div className='space-y-2'>
                 <Label
                   htmlFor='email'
@@ -167,7 +211,7 @@ const Contact = () => {
                   name='email'
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder={t("contact.emailPlaceholder")}
+                  placeholder="your@example.com"
                   className={`h-11 transition-colors duration-300 ${
                     errors.email
                       ? "border-red-500/50 focus-visible:ring-red-500/30"

@@ -143,13 +143,15 @@ export const deleteUser = async (req, res) => {
 
 export const sendMessage = async (req, res) => {
   try {
-    const { name, email, message } = req.body;
+    const { name, email, phoneNumber, message } = req.body;
 
-    if (!name || !email || !message) {
+    // Check if phone is provided
+    if (!name || !email || !phoneNumber || !message) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    await Message.create({ name, email, message });
+    await Message.create({ name, email, phoneNumber, message });
+
     res.status(201).json({ message: "Message sent successfully" });
   } catch (err) {
     res.status(400).json({ message: err.message });

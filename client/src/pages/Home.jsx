@@ -8,6 +8,7 @@ import {
   FiTwitter,
   FiInstagram,
   FiMail,
+  FiUser,
 } from "react-icons/fi";
 import {
   FaHtml5,
@@ -443,10 +444,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* About Me Section  ---------------------------------------------- */}
+      {/* About Me Section ---------------------------------------------- */}
       <section id='about' className='relative z-10 py-20 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center'>
-          {/* Image */}
+          {/* Image Container with Glass3D */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -454,22 +455,16 @@ const Home = () => {
             transition={{ duration: 0.8 }}
             className='relative'
           >
-            <div
-              className='aspect-square backdrop-blur-xl rounded-2xl overflow-hidden'
-              style={{
-                background: "var(--section-about-bg)",
-                border: "1px solid var(--section-about-border)",
-              }}
-            >
+            <div className='glass3d aspect-square rounded-3xl overflow-hidden p-2'>
               <img
                 src='/my-pic.png'
-                alt={about?.name || "Developer"}
-                className='w-full h-full object-cover'
+                alt={about?.name || "Reza Paradox"}
+                className='w-full h-full object-cover rounded-2xl'
               />
               <div
-                className='absolute inset-0 pointer-events-none'
+                className='absolute inset-0 pointer-events-none rounded-2xl'
                 style={{
-                  background: `linear-gradient(to top, var(--section-about-overlay), transparent)`,
+                  background: `linear-gradient(to top, rgba(0,0,0,0.4), transparent)`,
                 }}
               />
             </div>
@@ -488,54 +483,85 @@ const Home = () => {
             >
               {t("home.title-2")}
             </h2>
+
             <div className='space-y-4 mb-8'>
               <p
-                className='leading-relaxed font-bold'
+                className='leading-relaxed font-bold text-lg'
                 style={{ color: "var(--section-text)" }}
               >
                 {t("home.description-3")}
               </p>
-              {/* <p
-                className='leading-relaxed font-bold'
-                style={{ color: "var(--section-text-muted)" }}
-              >
-                {about?.tagline ||
-                  "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community."}
-              </p> */}
             </div>
 
-            {/* Stats */}
-            <div className='flex items-center gap-6 mb-8'>
-              <div className='text-center'>
+            {/* --- PERSONAL INFO GRID (RESUME STYLE) --- */}
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10'>
+              <div className='flex items-center gap-3'>
+                <FiUser className='text-purple-400' />
+                <span className='text-sm font-medium text-gray-400 mr-2'>
+                  {t("home.name")} :
+                </span>
+                <span className='font-medium'>{t("home.name_label")}</span>
+              </div>
+
+              <div className='flex items-center gap-3'>
+                <FiMail className='text-purple-400' />
+                <span className='text-sm font-medium text-gray-400 mr-2'>
+                  {t("home.email")} :
+                </span>
+                <a
+                  href='mailto:rhparadox4@gmail.com'
+                  className='font-medium  hover:text-purple-400 transition-colors'
+                >
+                  rhparadox4@gmail.com
+                </a>
+              </div>
+
+              <div className='flex items-center gap-3'>
+                <FaGitAlt className='text-purple-400' />
+
+                <span className='text-sm font-medium text-gray-400 mr-2'>
+                  {t("home.location")} :
+                </span>
+                <span className='font-medium'>{t("home.location_label")}</span>
+              </div>
+              
+              <div className='flex items-center gap-3'>
+                <FiArrowRight className='text-purple-400' />
+                <span className='text-sm font-medium text-gray-400 mr-2'>
+                  {t("home.skill-level")}:
+                </span>
+                <span className='text-sm font-medium '>
+                  {t("home.skill-level-label")}
+                </span>
+              </div>
+            </div>
+
+            {/* Stats with Glass3D subtle background */}
+            <div className='glass3d flex flex-wrap items-center justify-between gap-6 mb-8 p-6 rounded-2xl'>
+              <div className='text-center flex-1'>
                 <span className='text-3xl font-bold text-purple-400'>3+</span>
                 <p
-                  className='text-sm'
+                  className='text-xs uppercase tracking-tighter mt-1'
                   style={{ color: "var(--section-text-muted)" }}
                 >
                   {t("home.experience")}
                 </p>
               </div>
-              <div
-                className='w-px h-12'
-                style={{ background: "var(--section-stats-border)" }}
-              ></div>
-              <div className='text-center'>
+              <div className='w-px h-10 bg-white/10 hidden sm:block'></div>
+              <div className='text-center flex-1'>
                 <span className='text-3xl font-bold text-purple-400'>50+</span>
                 <p
-                  className='text-sm'
+                  className='text-xs uppercase tracking-tighter mt-1'
                   style={{ color: "var(--section-text-muted)" }}
                 >
                   {t("home.projects")}
                 </p>
               </div>
-              <div
-                className='w-px h-12'
-                style={{ background: "var(--section-stats-border)" }}
-              ></div>
-              <div className='text-center'>
+              <div className='w-px h-10 bg-white/10 hidden sm:block'></div>
+              <div className='text-center flex-1'>
                 <span className='text-3xl font-bold text-purple-400'>100%</span>
                 <p
-                  className='text-sm'
+                  className='text-xs uppercase tracking-tighter mt-1'
                   style={{ color: "var(--section-text-muted)" }}
                 >
                   {t("home.satisfaction")}
@@ -543,50 +569,32 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Social Links */}
-            <div className='flex gap-4'>
-              {about?.socialLinks?.github && (
+            {/* Social Links & Action */}
+            <div className='flex items-center gap-6'>
+              <div className='flex gap-4'>
+                {/* Your existing Social Icons mapping */}
                 <a
-                  href={about.socialLinks.github}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='hover:text-white transition-colors'
-                  style={{ color: "var(--section-text-muted)" }}
+                  href='#'
+                  className='p-2 glass3d rounded-full hover:scale-110 transition-transform'
                 >
-                  <FiGithub size={24} />
+                  <FiGithub size={20} />
                 </a>
-              )}
-              {about?.socialLinks?.linkedin && (
                 <a
-                  href={about.socialLinks.linkedin}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='hover:text-white transition-colors'
-                  style={{ color: "var(--section-text-muted)" }}
+                  href='#'
+                  className='p-2 glass3d rounded-full hover:scale-110 transition-transform'
                 >
-                  <FiLinkedin size={24} />
+                  <FiLinkedin size={20} />
                 </a>
-              )}
-              {about?.socialLinks?.twitter && (
                 <a
-                  href={about.socialLinks.twitter}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='hover:text-white transition-colors'
-                  style={{ color: "var(--section-text-muted)" }}
+                  href='#'
+                  className='p-2 glass3d rounded-full hover:scale-110 transition-transform'
                 >
-                  <FiTwitter size={24} />
+                  <FiMail size={20} />
                 </a>
-              )}
-              {about?.socialLinks?.email && (
-                <a
-                  href={`mailto:${about.socialLinks.email}`}
-                  className='hover:text-white transition-colors'
-                  style={{ color: "var(--section-text-muted)" }}
-                >
-                  <FiMail size={24} />
-                </a>
-              )}
+              </div>
+              <button className='px-6 py-2 border border-purple-500/50 rounded-full text-sm font-bold hover:bg-purple-500/10 transition-all'>
+                Download CV
+              </button>
             </div>
           </motion.div>
         </div>
@@ -620,7 +628,10 @@ const Home = () => {
 
       {/* Projects Section ---------------------------------------------- */}
 
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:px-6 lg:px-14 py-20 mx-5'>
+      <div
+        id='projects'
+        className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:px-6 lg:px-14 py-20 mx-5'
+      >
         <div className='col-span-full text-center mb-8'>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

@@ -25,14 +25,20 @@
     "description-2": "Designing scalable server architectures with Node.js and MongoDB. I build robust APIs and databases that power modern web applications.",
 
     "title-2": "About Me",
-    "description-3": "I am a passionate developer with experience in both frontend and backend technologies. I enjoy creating innovative solutions and bringing ideas to life.",
-    "experience": "Years of Experience",
-    "projects": "Projects Completed",
-    "satisfaction": "Client Satisfaction",
-    "title-3": "My Skills",
-    "title-4": "Projects that I created"
+    "description-3": "I am a dedicated Full-Stack Developer focused on building modern, scalable web applications...",
+    "name": " Name",
+    "name_label": "Sayed Reza Hosseini",
+    "email": "Email",
+    "email_label": "rhparadox4@gmail.com",
+    "location": "Location",
+    "location_label": "Iran , Tehran, varamin",
+    "skill-level" : "Skill Level",
+    "skill-level-label" : "junior full stack",
+    "projects": "Completed",
+    "satisfaction": "Client Satisfaction"
   },
   "projects": {
+    "experience": "Years Exp.",
     "title": "back to home",
     "demo": "live demo",
     "about project": "About Project"
@@ -41,6 +47,7 @@
     "title": "Get In Touch",
     "description": "Have a question or want to work together?",
     "name": "Name",
+    "phone-number": "Phone Number",
     "email": "Email",
     "subject": "Subject",
     "message": "Message",
@@ -49,7 +56,6 @@
     "success": "Message sent successfully!",
     "error": "Failed to send message. Please try again.",
     "namePlaceholder": "Your name",
-    "emailPlaceholder": "your.email@example.com",
     "messagePlaceholder": "Your message..."
   },
 

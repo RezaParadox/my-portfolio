@@ -347,6 +347,44 @@ body {
   z-index: 2; 
 }
 
+
+
+/* Custom Phone Input Styling */
+.phone-input-container .PhoneInput {
+  display: flex;
+  align-items: center;
+  gap: 0; /* Remove gap so it looks like one solid box */
+  direction: ltr !important; /* Phone numbers MUST be LTR */
+}
+
+.phone-input-container .PhoneInputInput {
+  background: transparent !important;
+  border: none !important;
+  color: var(--foreground);
+  font-size: 0.875rem;
+  padding: 0 12px;
+  width: 100%;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Fix the flag icon size */
+.PhoneInputCountryIcon--square {
+  width: 1.2em;
+}
+
+/* Ensure the container looks like your other inputs */
+.phone-input-field {
+  background: var(--secondary);
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.phone-input-field:focus-within {
+  border-color: #a855f7; /* Purple ring */
+  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+}
+
 @theme inline {
   --font-heading: "Rubik", "Vazirmatn", sans-serif;
   --font-sans: "Rubik", "Vazirmatn", "Inter Variable", sans-serif;

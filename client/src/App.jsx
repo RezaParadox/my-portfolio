@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
+import About from "./pages/AboutMe";
 import Projects from "./pages/Projects";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -40,6 +41,7 @@ function App() {
               <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/contact' element={<Contact />} />
+                <Route path='/about' element={<About />} />
                 <Route path='/projects' element={<Projects />} />
                 <Route path='/projects/:id' element={<ProjectDetail />} />
                 <Route path='/login' element={<Login />} />
