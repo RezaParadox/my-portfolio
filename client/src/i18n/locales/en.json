@@ -25,7 +25,7 @@
     "description-2": "Designing scalable server architectures with Node.js and MongoDB. I build robust APIs and databases that power modern web applications.",
 
     "title-2": "About Me",
-    "description-3": "I am a dedicated Full-Stack Developer focused on building modern, scalable web applications...",
+    "description-3": "I am a  Full-Stack Web Developer focused on building modern, scalable web applications...",
     "name": " Name",
     "name_label": "Sayed Reza Hosseini",
     "email": "Email",
@@ -36,6 +36,7 @@
     "skill-level-label": "junior full stack",
     "projects": "Completed",
     "satisfaction": "Client Satisfaction",
+    "download": "Download CV",
 
     "title-3": "My Skills",
     "title-4": "Projects I Have Created"

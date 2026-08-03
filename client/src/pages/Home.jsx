@@ -31,6 +31,9 @@ import {
   SiMysql,
 } from "react-icons/si";
 import { BiLogoPostgresql } from "react-icons/bi";
+
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { GiSkills } from "react-icons/gi";
 import DotGrid from "../components/DotGrid";
 import api from "../utils/api";
 
@@ -421,6 +424,8 @@ const Home = () => {
             >
               {t("home.title-1")}
             </h2>
+
+            <div className='w-30 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6' />
           </motion.div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
@@ -495,7 +500,7 @@ const Home = () => {
             </div>
 
             {/* --- PERSONAL INFO GRID (RESUME STYLE) --- */}
-            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mb-10'>
               <div className='flex items-center gap-3'>
                 <FiUser className='text-purple-400' />
                 <span className='text-sm font-medium text-gray-400 mr-2'>
@@ -518,7 +523,7 @@ const Home = () => {
               </div>
 
               <div className='flex items-center gap-3'>
-                <FaGitAlt className='text-purple-400' />
+                <HiOutlineLocationMarker className='text-purple-400' />
 
                 <span className='text-sm font-medium text-gray-400 mr-2'>
                   {t("home.location")} :
@@ -527,7 +532,7 @@ const Home = () => {
               </div>
 
               <div className='flex items-center gap-3'>
-                <FiArrowRight className='text-purple-400' />
+                <GiSkills className='text-purple-400' />
                 <span className='text-sm font-medium text-gray-400 mr-2'>
                   {t("home.skill-level")}:
                 </span>
@@ -570,11 +575,15 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Social Links & Action */}
+            {/* download cv*/}
             <div className='flex items-center gap-6'>
-              <button className='px-6 py-2 border border-purple-500/50 rounded-full text-sm font-bold hover:bg-purple-500/10 transition-all'>
-                Download CV
-              </button>
+              <a
+                href='/My-CV.pdf'
+                download
+                className='px-6 py-2 border border-purple-500/50 rounded-full text-sm font-bold hover:bg-purple-500/10 transition-all'
+              >
+                {t("home.download")}
+              </a>
             </div>
           </motion.div>
         </div>
@@ -596,6 +605,8 @@ const Home = () => {
             >
               {t("home.title-3")}
             </h2>
+
+            <div className='w-35 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6' />
           </motion.div>
 
           <div className='grid grid-cols-4 gap-4'>
@@ -607,7 +618,6 @@ const Home = () => {
       </section>
 
       {/* Projects Section ---------------------------------------------- */}
-
       <div
         id='projects'
         className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:px-6 lg:px-14 py-20 mx-5'
@@ -623,6 +633,7 @@ const Home = () => {
           >
             {t("home.title-4")}
           </motion.h2>
+          <div className='w-45 md:w-95 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6' />
         </div>
 
         {featuredProjects.map((project, index) => (

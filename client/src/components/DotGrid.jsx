@@ -6,7 +6,7 @@ const DotGrid = ({
   inactiveColor = 'rgba(168, 85, 247, 0.25)',
   activeColor = '#EC4899',
   gradientWidth = 400,
-  loopDuration = 3,
+  loopDuration = 10,
   mouseRadius = 120,
   className,
 }) => {

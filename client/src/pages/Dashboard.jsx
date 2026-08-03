@@ -140,15 +140,6 @@ const Dashboard = () => {
       accentBg: "rgba(16, 185, 129, 0.08)",
       badge: stats.unreadMessages > 0 ? stats.unreadMessages : null,
     },
-    {
-      title: "About",
-      count: null,
-      icon: FiUser,
-      link: "/admin/about",
-      description: "Profile & info",
-      accent: "#f59e0b",
-      accentBg: "rgba(245, 158, 11, 0.08)",
-    },
   ];
 
   // ── Loading ───────────────────────────────────────────────

@@ -41,9 +41,13 @@ const About = () => {
               {t("about.description")}
             </p>
             <div className='mt-6'>
-              <button className='px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-full transition-all'>
+              <a
+                href='/My-CV.pdf'
+                download
+                className='inline-flex px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-full transition-all'
+              >
                 Download CV
-              </button>
+              </a>
             </div>
           </div>
 

@@ -54,7 +54,10 @@ const Projects = () => {
           transition={{ duration: 0.6 }}
           className='text-center mb-16'
         >
-          <h1 className='text-4xl font-bold text-gray-900 dark:text-white mb-4'>
+          <h1
+            className='text-4xl font-bold text-gray-900 dark:text-white mb-4'
+            style={{ color: "var(--foreground)" }}
+          >
             Projects
           </h1>
           <div className='w-20 h-1 bg-purple-500 mx-auto'></div>
@@ -66,7 +69,10 @@ const Projects = () => {
             animate={{ opacity: 1 }}
             className='text-center py-12'
           >
-            <p className='text-gray-500 dark:text-gray-400 text-lg'>
+            <p
+              className='text-gray-500 dark:text-gray-400 text-lg'
+              style={{ color: "var(--foreground)" }}
+            >
               No projects yet. Add some from the admin dashboard!
             </p>
           </motion.div>
@@ -86,7 +92,7 @@ const Projects = () => {
                 >
                   <Link
                     to={`/projects/${project._id}`}
-                    className='bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl cursor-pointer flex flex-col'
+                    className='rounded-2xl shadow-lg overflow-hidden hover:shadow-xl cursor-pointer flex flex-col  bg-(--card-skill-bg)'
                   >
                     {project.image && (
                       <div className='relative w-full h-48 overflow-hidden'>
@@ -98,6 +104,7 @@ const Projects = () => {
                         <div className='absolute inset-0 shadow-[inset_0_-20px_30px_rgba(88,28,135,0.6)] pointer-events-none' />
                       </div>
                     )}
+
                     <div className='p-5 flex flex-col gap-3'>
                       <div className='flex flex-wrap gap-1.5'>
                         {(Array.isArray(project.techTags)
@@ -111,18 +118,26 @@ const Projects = () => {
                         ).map((tag, tagIndex) => (
                           <span
                             key={tagIndex}
-                            className='px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-[11px] rounded-full'
+                            className='px-2 py-0.5 bg-purple-500 text-white  text-[11px] rounded-full'
                           >
                             {tag}
                           </span>
                         ))}
                       </div>
-                      <div className='w-full h-px bg-gray-200 dark:bg-gray-700' />
+
+                      <div className='w-full h-px bg-gray-200 dark:bg-gray-700 ' />
+
                       <div>
-                        <h3 className='text-lg font-bold text-gray-900 dark:text-white mb-1'>
+                        <h3
+                          className='text-lg font-bold text-gray-900  mb-1'
+                          style={{ color: "var(--foreground)" }}
+                        >
                           {project.title}
                         </h3>
-                        <p className='text-gray-600 dark:text-gray-300 text-sm line-clamp-2'>
+                        <p
+                          className='text-sm line-clamp-2 '
+                          style={{ color: "var(--foreground)" }}
+                        >
                           {project.description}
                         </p>
                       </div>
@@ -131,7 +146,7 @@ const Projects = () => {
                           <a
                             href={project.liveUrl}
                             target='_blank'
-                            rel='noopener noreferrer'
+                            rel='opener northerner'
                             className='flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors'
                           >
                             <FiExternalLink size={14} />
@@ -156,21 +171,25 @@ const Projects = () => {
               ))}
             </div>
 
+            {/* pagination */}
             <div className='mt-12 flex flex-col gap-4 items-center justify-center'>
               <div className='flex flex-wrap items-center gap-2'>
                 <button
                   onClick={() => goToPage(currentPage - 1)}
-                  className='px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-sm font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors'
+                  className='px-4 py-2 rounded-full bg-purple-400 text-white text-sm font-medium   hover:bg-purple-600 transition-colors duration-300'
                   disabled={currentPage === 1}
                 >
                   Previous
                 </button>
-                <span className='text-sm text-gray-700 dark:text-gray-300'>
+                <span
+                  className='text-sm text-gray-700 dark:text-gray-300'
+                  style={{ color: "var(--foreground)" }}
+                >
                   Page {currentPage} of {totalPages}
                 </span>
                 <button
                   onClick={() => goToPage(currentPage + 1)}
-                  className='px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-sm font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors'
+                  className='px-4 py-2 rounded-full text-white bg-purple-400 text-sm font-medium   hover:bg-purple-600 transition-colors duration-300'
                   disabled={currentPage === totalPages}
                 >
                   Next
