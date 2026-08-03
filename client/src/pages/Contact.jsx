@@ -181,7 +181,7 @@ const Contact = () => {
                   <PhoneInput
                     countrySelectComponent={CountrySelect}
                     international
-                    defaultCountry='AF'
+                    defaultCountry='IR'
                     value={formData.phoneNumber}
                     onChange={handlePhoneChange}
                     placeholder={t("contact.phonePlaceholder")}

@@ -30,6 +30,7 @@ import {
   SiNextdotjs,
   SiMysql,
 } from "react-icons/si";
+import { BiLogoPostgresql } from "react-icons/bi";
 import DotGrid from "../components/DotGrid";
 import api from "../utils/api";
 
@@ -49,7 +50,7 @@ const skills = [
   { name: "GitHub", icon: FaGithub },
   { name: "Git", icon: FaGitAlt },
   { name: "Docker", icon: FaDocker },
-  { name: "MySQL", icon: SiMysql },
+  { name: "PostgreSQL", icon: BiLogoPostgresql },
 ];
 
 const FloatingDots = ({ isHovered }) => {
@@ -166,7 +167,7 @@ const SkillCard = ({ skill, index }) => {
 
       <Icon
         size={40}
-        className='relative z-10'
+        className='relative z-10 '
         style={{ color: "var(--card-skill-icon)" }}
       />
       <span
@@ -524,7 +525,7 @@ const Home = () => {
                 </span>
                 <span className='font-medium'>{t("home.location_label")}</span>
               </div>
-              
+
               <div className='flex items-center gap-3'>
                 <FiArrowRight className='text-purple-400' />
                 <span className='text-sm font-medium text-gray-400 mr-2'>
@@ -537,7 +538,7 @@ const Home = () => {
             </div>
 
             {/* Stats with Glass3D subtle background */}
-            <div className='glass3d flex flex-wrap items-center justify-between gap-6 mb-8 p-6 rounded-2xl'>
+            <div className=' flex flex-wrap items-center justify-between border border-purple-500/50   gap-6 mb-8 p-6 rounded-2xl'>
               <div className='text-center flex-1'>
                 <span className='text-3xl font-bold text-purple-400'>3+</span>
                 <p
@@ -571,27 +572,6 @@ const Home = () => {
 
             {/* Social Links & Action */}
             <div className='flex items-center gap-6'>
-              <div className='flex gap-4'>
-                {/* Your existing Social Icons mapping */}
-                <a
-                  href='#'
-                  className='p-2 glass3d rounded-full hover:scale-110 transition-transform'
-                >
-                  <FiGithub size={20} />
-                </a>
-                <a
-                  href='#'
-                  className='p-2 glass3d rounded-full hover:scale-110 transition-transform'
-                >
-                  <FiLinkedin size={20} />
-                </a>
-                <a
-                  href='#'
-                  className='p-2 glass3d rounded-full hover:scale-110 transition-transform'
-                >
-                  <FiMail size={20} />
-                </a>
-              </div>
               <button className='px-6 py-2 border border-purple-500/50 rounded-full text-sm font-bold hover:bg-purple-500/10 transition-all'>
                 Download CV
               </button>

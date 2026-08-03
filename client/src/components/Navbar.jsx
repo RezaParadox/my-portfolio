@@ -18,21 +18,24 @@ const Navbar = () => {
 
   const navLinks = [
     { path: "/", label: t("navbar.home") },
-    { path: "/about", label: t("home.title-2") },
-    { path: "/projects", label: t("navbar.projects") },
+    { path: "/", hash: "#about", label: t("home.title-2") },
+    { path: "/", hash: "#projects", label: t("navbar.projects") },
     { path: "/contact", label: t("navbar.contact") },
   ];
 
   const scrollToSection = (hash) => {
+    const scrollNow = () => {
+      const el = document.querySelector(hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
+
     if (location.pathname !== "/") {
       navigate("/");
-      setTimeout(() => {
-        const el = document.querySelector(hash);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+      setTimeout(scrollNow, 120);
     } else {
-      const el = document.querySelector(hash);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+      scrollNow();
     }
   };
 
@@ -146,16 +149,29 @@ const Navbar = () => {
       {/* 2. APPLY glass3d CLASS TO MOBILE MENU AS WELL */}
       {mobileMenuOpen && (
         <div className='glass3d md:hidden fixed top-full w-96  rounded-2xl p-4  '>
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setMobileMenuOpen(false)}
-              className={`block py-3 text-sm font-medium ${isActive(link) ? "text-(--navbar-text-active)" : "text-(--navbar-text)"}`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) =>
+            link.hash ? (
+              <button
+                key={link.hash}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  scrollToSection(link.hash);
+                }}
+                className={`block w-full text-left py-3 text-sm font-medium ${isActive(link) ? "text-(--navbar-text-active)" : "text-(--navbar-text)"}`}
+              >
+                {link.label}
+              </button>
+            ) : (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block py-3 text-sm font-medium ${isActive(link) ? "text-(--navbar-text-active)" : "text-(--navbar-text)"}`}
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
 
           <div className='flex flex-col items-center gap-4 mt-4 w-full'>
             {!user ? (

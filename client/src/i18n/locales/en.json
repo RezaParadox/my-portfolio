@@ -32,10 +32,13 @@
     "email_label": "rhparadox4@gmail.com",
     "location": "Location",
     "location_label": "Iran , Tehran, varamin",
-    "skill-level" : "Skill Level",
-    "skill-level-label" : "junior full stack",
+    "skill-level": "Skill Level",
+    "skill-level-label": "junior full stack",
     "projects": "Completed",
-    "satisfaction": "Client Satisfaction"
+    "satisfaction": "Client Satisfaction",
+
+    "title-3": "My Skills",
+    "title-4": "Projects I Have Created"
   },
   "projects": {
     "experience": "Years Exp.",
