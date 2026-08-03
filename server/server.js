@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -18,6 +19,12 @@ connectDB();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const clientDistPath = path.resolve(__dirname, "../client/dist");
+const clientDistExists = fs.existsSync(clientDistPath);
+const isProduction =
+  process.env.NODE_ENV === "production" ||
+  Boolean(process.env.RENDER) ||
+  clientDistExists;
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,7 +32,8 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin:
+      process.env.CLIENT_URL || (isProduction ? true : "http://localhost:5173"),
     credentials: true,
   }),
 );
@@ -40,15 +48,29 @@ app.use("/api/users", users);
 app.use("/api/projects", projects);
 
 // Health check
-app.get("/", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.json({
+    success: true,
     message: "Portfolio API is running!",
+    mode: isProduction ? "production" : "development",
     endpoints: {
       users: "/api/users",
       projects: "/api/projects",
     },
   });
 });
+
+if (isProduction && clientDistExists) {
+  app.use(express.static(clientDistPath));
+
+  app.get(/^(?!\/api\/|\/uploads).*/, (req, res, next) => {
+    if (req.path.startsWith("/api") || req.path.startsWith("/uploads")) {
+      return next();
+    }
+
+    return res.sendFile(path.join(clientDistPath, "index.html"));
+  });
+}
 
 // Error handling
 app.use((err, req, res, next) => {
