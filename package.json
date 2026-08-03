@@ -1,20 +1,17 @@
 {
   "name": "portfolio",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
+  "description": "Personal portfolio website - React client + Express API",
+  "private": true,
   "license": "Apache-2.0",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.18.0",
-      "onFail": "download"
-    }
+  "type": "module",
+  "packageManager": "pnpm@11.18.0",
+  "engines": {
+    "node": ">=18"
   },
-  "type": "module"
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "build": "pnpm --filter client build",
+    "start": "pnpm --filter server start"
+  }
 }
