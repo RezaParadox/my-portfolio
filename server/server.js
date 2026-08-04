@@ -56,7 +56,7 @@ app.use("/api/projects", projects);
 
 // production
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "../frontend-blog/dist");
+  const frontendPath = path.join(__dirname, "../client/dist");
 
   app.use(express.static(frontendPath));
   app.get("*", (req, res) => {
