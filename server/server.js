@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
-import fs from "fs";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -19,21 +18,28 @@ connectDB();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const clientDistPath = path.resolve(__dirname, "../client/dist");
-const clientDistExists = fs.existsSync(clientDistPath);
-const isProduction =
-  process.env.NODE_ENV === "production" ||
-  Boolean(process.env.RENDER) ||
-  clientDistExists;
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://my-portfolio-nlm6.onrender.com",
+];
+
 app.use(
   cors({
-    origin:
-      process.env.CLIENT_URL || (isProduction ? true : "http://localhost:5173"),
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        var msg =
+          "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   }),
 );
@@ -47,30 +53,27 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/users", users);
 app.use("/api/projects", projects);
 
+
+// production
+if (process.env.NODE_ENV === "production") {
+  const frontendPath = path.join(__dirname, "../frontend-blog/dist");
+
+  app.use(express.static(frontendPath));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(frontendPath, "index.html"));
+  });
+}
+
 // Health check
-app.get("/api/health", (req, res) => {
+app.get("/", (req, res) => {
   res.json({
-    success: true,
     message: "Portfolio API is running!",
-    mode: isProduction ? "production" : "development",
     endpoints: {
       users: "/api/users",
       projects: "/api/projects",
     },
   });
 });
-
-if (isProduction && clientDistExists) {
-  app.use(express.static(clientDistPath));
-
-  app.get(/^(?!\/api\/|\/uploads).*/, (req, res, next) => {
-    if (req.path.startsWith("/api") || req.path.startsWith("/uploads")) {
-      return next();
-    }
-
-    return res.sendFile(path.join(clientDistPath, "index.html"));
-  });
-}
 
 // Error handling
 app.use((err, req, res, next) => {
@@ -89,6 +92,8 @@ app.use((req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Server is running on port ${PORT}`);
 });
