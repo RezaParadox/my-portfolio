@@ -6,6 +6,7 @@ import {
   FiInstagram,
   FiMail,
 } from "react-icons/fi";
+import { BiLogoTelegram } from "react-icons/bi";
 
 import { useTranslation } from "react-i18next";
 
@@ -40,11 +41,13 @@ const Footer = () => {
               </p>
               <div className='flex items-center gap-3'>
                 {[
-                  { icon: FiGithub, href: "https://github.com" },
-                  { icon: FiLinkedin, href: "https://linkedin.com" },
-                  { icon: FiTwitter, href: "https://twitter.com" },
-                  { icon: FiInstagram, href: "https://instagram.com" },
-                  { icon: FiMail, href: "mailto:hello@example.com" },
+                  { icon: FiGithub, href: "https://github.com/RezaParadox" },
+                  {
+                    icon: FiInstagram,
+                    href: "https://www.instagram.com/rh.paradox?igsh=MTEydDdqcHFvZG90bA==",
+                  },
+                  { icon: BiLogoTelegram, href: "https://t.me/Rhparadox" },
+                  // { icon: FiTwitter, href: "https://twitter.com" },
                 ].map((social, i) => (
                   <a
                     key={i}
