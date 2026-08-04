@@ -284,7 +284,7 @@ const ManageProjects = () => {
                     {project.techTags?.slice(0, 3).map((tag, tagIndex) => (
                       <span
                         key={tagIndex}
-                        className='px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded-full'
+                        className='px-2 py-1 bg-purple-500 text-white text-xs rounded-full'
                       >
                         {tag}
                       </span>

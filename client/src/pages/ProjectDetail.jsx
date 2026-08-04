@@ -148,7 +148,7 @@ const ProjectDetail = () => {
                 href={project.githubUrl}
                 target='_blank'
                 rel='noopener noreferrer'
-                className='flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white text-sm font-medium rounded-xl transition-colors'
+                className='flex items-center gap-2 px-4 py-2  outline border-purple-400  text-purple-400 hover:bg-purple-400 hover:text-white duration-300  text-sm font-medium rounded-xl transition-colors'
               >
                 <FiGithub size={16} />
                 Source Code
