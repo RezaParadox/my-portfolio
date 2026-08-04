@@ -53,15 +53,15 @@ app.use("/api/users", users);
 app.use("/api/projects", projects);
 
 // Health check
-app.get("/", (req, res) => {
+/* app.get("/", (req, res) => {
   res.json({
     message: "Portfolio API is running!",
     endpoints: {
       users: "/api/users",
       projects: "/api/projects",
     },
-  });
-});
+  }); 
+}); */
 
 // ── Production: serve the built React app ──
 if (process.env.NODE_ENV === "production") {
