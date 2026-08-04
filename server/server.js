@@ -20,8 +20,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
+const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = [
   "http://localhost:5173",
@@ -49,20 +48,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Routes
+// Routes______________________________________________________
 app.use("/api/users", users);
 app.use("/api/projects", projects);
-
-
-// production
-if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "../client/dist");
-
-  app.use(express.static(frontendPath));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(frontendPath, "index.html"));
-  });
-}
 
 // Health check
 app.get("/", (req, res) => {
@@ -74,6 +62,23 @@ app.get("/", (req, res) => {
     },
   });
 });
+
+// ── Production: serve the built React app ──
+if (process.env.NODE_ENV === "production") {
+  const frontendPath = path.join(__dirname, "../client/dist");
+
+  app.use(express.static(frontendPath));
+
+  // API 404 stays JSON (instead of returning index.html)
+  app.use("/api", (req, res) => {
+    res.status(404).json({ success: false, message: "Route not found" });
+  });
+
+  // SPA fallback — Express 5 wildcard syntax
+  app.get("/*splat", (req, res) => {
+    res.sendFile(path.resolve(frontendPath, "index.html"));
+  });
+}
 
 // Error handling
 app.use((err, req, res, next) => {
@@ -91,8 +96,6 @@ app.use((req, res) => {
     message: "Route not found",
   });
 });
-
-
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server is running on port ${PORT}`);
